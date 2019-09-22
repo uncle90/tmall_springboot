@@ -1,4 +1,4 @@
-package com.finstone.tmall_springboot;
+package com.finstone.tmall;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

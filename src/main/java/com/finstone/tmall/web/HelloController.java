@@ -1,4 +1,4 @@
-package com.finstone.tmall_springboot.controller;
+package com.finstone.tmall.web;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
