@@ -1,0 +1,28 @@
+<!-- 定义名为"html"的模板片段 -->
+<div th:fragment="html" class="pageDiv">
+	<!-- vue+thymeleaf 实现分页标签-->
+	<nav v-if="pagination.hasContent">
+		<ul class="pagination">
+			<!--非第一页，点击前往第一页-->
+			<li :class="{'disabled': pagination.first}">
+				<a href="#nowhere" @click="gotoPage('first')">«</a>
+			</li>
+			<!--有上一页，点击前往上一页-->
+			<li :class="{'disabled': !pagination.hasPrevious}">
+				<a href="#nowhere" @click="gotoPage('previous')">‹</a>
+			</li>
+			<!--非当前页，点击前往指定页-->
+			<li v-for="n in pagination.totalPages" :class="{'disabled': pagination.number==n-1}">
+				<a href="#nowhere" @click="gotoPage(n-1)">{{n}}</a>
+			</li>
+			<!--有下一页，点击前往下一页-->
+			<li :class="{'disabled': !pagination.hasNext}">
+				<a href="#nowhere" @click="gotoPage('next')">›</a>
+			</li>
+			<!--非最后一页，点击前往最后一页-->
+			<li :class="{'disabled': pagination.last}">
+				<a href="#nowhere" @click="gotoPage('last')">»</a>
+			</li>
+		</ul>
+	</nav>
+</div>

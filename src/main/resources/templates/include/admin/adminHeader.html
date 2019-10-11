@@ -71,5 +71,20 @@
                 }
             });
         })
+
+        //分页组件，跳转到指定页
+        function gotoPage(page, vue){
+            if(!isNaN(page)){
+                vue.list(page);
+            }else if(page == 'first' && !vue.pagination.first){
+                vue.list(0);
+            }else if(page == 'previous' && vue.pagination.hasPrevious){
+                vue.list(vue.pagination.number-1);
+            }else if(page == 'next' && vue.pagination.hasNext){
+                vue.list(vue.pagination.number+1);
+            }else if(page == 'last' && !vue.pagination.last){
+                vue.list(vue.pagination.totalPages-1);
+            }
+        }
     </script>
 </template>

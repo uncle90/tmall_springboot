@@ -2,12 +2,12 @@
 <!-- 引入thymeleaf模板 -->
 <html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
-<!-- 以templates为根目录，引用指定thymeleaf模板中名为"html"的内容，保留当前标签 -->
+<!-- 以templates为根目录，引用指定thymeleaf模板中名为"html"的内容，但保留当前标签（inclue）。 -->
 <head th:include="include/admin/adminHeader::html('分类管理')"></head>
 <body>
 
-<!-- 以templates为根目录，引用指定thymeleaf模板中名为"html"的内容，保留当前标签 -->
-<div th:include="include/admin/adminNavigator::html"></div>
+<!-- 以templates为根目录，用指定thymeleaf模板中名为"html"的内容，替换当前标签（replace） -->
+<div th:replace="include/admin/adminNavigator::html"></div>
 
 <script>
     $(function(){
@@ -23,7 +23,8 @@
     $(function(){
         var data4Vue = {
             uri:'categories',
-            beans: []
+            pagination:{},//分页bean
+            beans:[]//分页数据列表
         };
 
         var vm = new Vue({
@@ -36,14 +37,19 @@
                 }
             },*/
             mounted:function(){
-                this.list();//在vue实例创建后调用
+                this.list(0);//在vue实例创建后调用
             },
             methods:{
-                list:function(){
-                    var url = this.uri;
+                list:function(start){
+                    var url = this.uri + "?start=" + start;
                     axios.get(url).then(function(response){
-                        vm.beans = response.data;//此处this指代axios，不是vue实例
+                        vm.pagination = response.data;//此处this指代axios，不是vue实例
+                        vm.beans = response.data.content;
                     });
+                },
+                //放在adminHeader.html中的翻页公用组件
+                gotoPage:function(page){
+                    gotoPage(page,vm);
                 }
             }
         })
@@ -85,56 +91,8 @@
         </table>
     </div>
 
-    <div class="pageDiv">
-        <script>
-            $(function(){
-                $("ul.pagination li.disabled a").click(function(){
-                    return false;
-                });
-            });
-
-        </script>
-        <!--<nav>
-            <ul class="pagination">
-                <li <c:if test="${!page.hasPrevious}">class="disabled"</c:if>>
-                <a  href="?start=0${page.param}" aria-label="Previous" >
-                    <span aria-hidden="true">«</span>
-                </a>
-                </li>
-
-                <li <c:if test="${!page.hasPrevious}">class="disabled"</c:if>>
-                <a  href="?start=${page.start-page.count}${page.param}" aria-label="Previous" >
-                    <span aria-hidden="true">‹</span>
-                </a>
-                </li>
-
-                <c:forEach begin="0" end="${page.totalPage-1>0?page.totalPage-1:0}" varStatus="status">
-                    <c:if test="${status.count*page.count-page.start<=20 && status.count*page.count-page.start>=-10}">
-
-                        <li <c:if test="${status.index*page.count==page.start}">class="disabled"</c:if>>
-                        <a
-                                href="?start=${status.index*page.count}${page.param}"
-                        <c:if test="${status.index*page.count==page.start}">class="current"</c:if>
-                        >${status.count}</a>
-                        </li>
-
-                    </c:if>
-
-                </c:forEach>
-
-                <li <c:if test="${!page.hasNext}">class="disabled"</c:if>>
-                <a href="?start=${page.start+page.count}${page.param}" aria-label="Next">
-                    <span aria-hidden="true">›</span>
-                </a>
-                </li>
-                <li <c:if test="${!page.hasNext}">class="disabled"</c:if>>
-                <a href="?start=${page.last}${page.param}" aria-label="Next">
-                    <span aria-hidden="true">»</span>
-                </a>
-                </li>
-            </ul>
-        </nav>-->
-    </div>
+    <!-- 以templates为根目录，用指定thymeleaf模板中名为"html"的内容，替换当前标签（replace） -->
+    <div th:replace="include/admin/adminPage::html"></div>
 
     <div class="panel panel-warning addDiv">
         <div class="panel-heading">新增分类</div>
@@ -164,7 +122,7 @@
 </div>
 
 
-<!-- 以templates为根目录，引用指定thymeleaf模板中名为"html"的内容，保留当前标签 -->
+<!-- 以templates为根目录，用指定thymeleaf模板中名为"html"的内容，替换当前标签（replace） -->
 <div th:replace="include/admin/adminFooter::html"></div>
 
 </body>
