@@ -20,11 +20,9 @@
 
     <!--自定义js-->
     <script>
-        function checkEmpty(id, name){
-            var value = $("#"+id).val();
-            if(value.length==0){
+        function checkEmpty(name,value){
+            if(value==null || value.length==0){
                 alert(name+ "不能为空");
-                $("#"+id)[0].focus();
                 return false;
             }
             return true;

@@ -24,7 +24,9 @@
         var data4Vue = {
             uri:'categories',
             pagination:{},//分页bean
-            beans:[]//分页数据列表
+            beans:[],     //分页数据列表
+            bean: { id: 0, name: ''},
+            file: null   //上传文件
         };
 
         var vm = new Vue({
@@ -50,6 +52,57 @@
                 //放在adminHeader.html中的翻页公用组件
                 gotoPage:function(page){
                     gotoPage(page,vm);
+                },
+                /*getFile:function(e){
+                    //接收上传文件
+                    this.file = this.$refs.finputer.files[0];
+                },*/
+                getFile:function(event){
+                    //接收上传文件
+                    this.file = event.target.files[0];
+                },
+                add:function(){
+                    //检查名称、图片是否为空
+                    if(!checkEmpty("分类名称",this.bean.name)){
+                        return;
+                    }
+                    if(!checkEmpty("分类图片",this.file)){
+                        return;
+                    }
+                    //axios.js传文件要用FormData
+                    var url = this.uri;
+                    var formData = new FormData();
+                    formData.append("name",this.bean.name);
+                    formData.append("image",this.file);
+                    axios.post(url,formData).then(function(response){
+                        //刷新页面数据
+                        vm.list(0);
+                        //清空表单
+                        vm.file = null;
+                        vm.bean = { id: 0, name: ''};
+                        $("#categoryPic").val('');
+                    }).catch(function (error){
+                        if(error && error.response){
+                            switch(error.response.status){
+                                case 401:
+                                    error.message = '未授权，请重新登录';
+                                    break;
+                                case 403:
+                                    error.message = '拒绝访问';
+                                    break;
+                                case 404:
+                                    error.message = '请求错误，未找到该资源';
+                                    break;
+                                case 408:
+                                    error.message = '请求超时';
+                                    break;
+                                case 500:
+                                    error.message = '内部服务错误';
+                                    break;
+                            }
+                            alert(error.message);
+                        }
+                    });
                 }
             }
         })
@@ -97,25 +150,28 @@
     <div class="panel panel-warning addDiv">
         <div class="panel-heading">新增分类</div>
         <div class="panel-body">
-            <form method="post" id="addForm" action="admin_category_add" enctype="multipart/form-data">
+            <!--<form method="post" id="addForm" action="categories" enctype="multipart/form-data">-->
                 <table class="addTable">
                     <tr>
                         <td>分类名称</td>
-                        <td><input  id="name" name="name" type="text" class="form-control"></td>
+                        <td><input  id="name" name="name" type="text" class="form-control" v-model="bean.name"></td>
                     </tr>
                     <tr>
                         <td>分类图片</td>
                         <td>
-                            <input id="categoryPic" accept="image/*" type="file" name="image" />
+                            <!--方法一、ref给元素、组件注册引用，$ref获取元素
+                            <input id="categoryPic" accept="image/*" type="file" name="image" ref="finputer" @change="getFile"/>-->
+                            <!--方法二、传$event-->
+                            <input id="categoryPic" accept="image/*" type="file" name="image" @change="getFile($event)"/>
                         </td>
                     </tr>
                     <tr class="submitTR">
                         <td colspan="2" align="center">
-                            <button type="submit" class="btn btn-success">提 交</button>
+                            <button type="submit" class="btn btn-success" @click="add">提 交</button>
                         </td>
                     </tr>
                 </table>
-            </form>
+            <!--</form>-->
         </div>
     </div>
 
