@@ -5,10 +5,7 @@ import com.finstone.tmall.pojo.Page4JPA;
 import com.finstone.tmall.service.CategoryService;
 import com.finstone.tmall.util.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -65,5 +62,21 @@ public class CategoryController {
         image.transferTo(file);   //接收上传图片
         BufferedImage img = ImageUtil.change2jpg(file);//转换图片（数据存储）格式为jpg
         ImageIO.write(img, "jpg", file); //保存图片到文件
+    }
+
+    /**
+     * 删除分类
+     * {@link PathVariable}用来绑定URI模板变量.
+     */
+    @DeleteMapping("/categories/{id}")
+    //@RequestMapping(method = RequestMethod.DELETE, value="/categories/{id}")
+    public String delete(@PathVariable("id") int id, HttpSession session) throws IOException {
+        categoryService.delete(id);
+        File imageFolder = new File(session.getServletContext().getRealPath("img/category"));
+        File file = new File(imageFolder, id+".jpg");
+        if(file.exists()){
+            file.delete();
+        }
+        return null;
     }
 }

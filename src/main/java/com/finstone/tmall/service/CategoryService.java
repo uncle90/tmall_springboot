@@ -23,6 +23,10 @@ public class CategoryService {
         return categoryDao.findAll(sort);
     }
 
+    public Category get(int id){
+        return categoryDao.findOne(id);
+    }
+
     /**
      * Spring JPA 分页查询
      * @param start 从0开始的页面索引
@@ -43,9 +47,16 @@ public class CategoryService {
 
     /**
      * 添加一条记录
-     * @return
      */
     public Category add(Category category){
         return categoryDao.save(category);
     }
+
+    /**
+     * 删除一条记录
+     */
+    public void delete(int id){
+        categoryDao.delete(id);
+    }
+
 }

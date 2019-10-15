@@ -58,17 +58,12 @@
             return true;
         }
 
-        $(function(){
-            $("a").click(function(){
-                var deleteLink = $(this).attr("deleteLink");
-                if("true"==deleteLink){
-                    var confirmDelete = confirm("确认要删除");
-                    if(confirmDelete)
-                        return true;
-                    return false;
-                }
-            });
-        })
+        function checkDeleteLink() {
+            var confirmDelete = confirm("确认要删除");
+            if(confirmDelete)
+                return true;
+            return false;
+        }
 
         //分页组件，跳转到指定页
         function gotoPage(page, vue){

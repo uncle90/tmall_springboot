@@ -103,6 +103,21 @@
                             alert(error.message);
                         }
                     });
+                },
+                //delete是vue的保留字，不能作为方法名。
+                deleteOne:function (id) {
+                    if(!checkDeleteLink()){
+                        return;
+                    }
+                    var url = this.uri + "/" + id;
+                    axios.delete(url).then(function(response){
+                        console.log(response.data);
+                        if(0!=response.data.length){
+                            alert(response.data);
+                        }else{
+                            vm.list(0);
+                        }
+                    });
                 }
             }
         })
@@ -137,7 +152,7 @@
                         <td><a :href="'admin_property_list?cid='+c.id"><span class="glyphicon glyphicon-th-list"></span></a></td>
                         <td><a :href="'admin_product_list?cid='+c.id"><span class="glyphicon glyphicon-shopping-cart"></span></a></td>
                         <td><a :href="'admin_category_edit?id='+c.id"><span class="glyphicon glyphicon-edit"></span></a></td>
-                        <td><a deleteLink="true" :href="'admin_category_delete?id='+c.id"><span class="glyphicon glyphicon-trash"></span></a></td>
+                        <td><a href="javascript:void(0)" @click="deleteOne(c.id)"><span class="glyphicon glyphicon-trash"></span></a></td>
                     </tr>
                 <!--</template>-->
             </tbody>
