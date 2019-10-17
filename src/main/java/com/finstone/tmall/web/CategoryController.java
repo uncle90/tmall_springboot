@@ -79,4 +79,27 @@ public class CategoryController {
         }
         return null;
     }
+
+    /**
+     * 查询一个分类
+     */
+    @GetMapping(value="/categories/{id}")
+    public Category get(@PathVariable("id") int id) throws Exception {
+        return categoryService.get(id);
+    }
+
+    /**
+     * 修改一个分类
+     * POST用来“增资源”，重复请求时，后一个请求不会覆盖前一个请求的结果；
+     * PUT 用来“改资源”，重复请求时，后一个请求  会覆盖前一个请求的结果；
+     * 注：PUT请求需要
+     */
+    @PutMapping(value="/categories")
+    public Object update(@RequestBody Category category, HttpSession session, MultipartFile image) throws Exception {
+        if(category.getId() == null){
+            return "111111";
+        }
+        return categoryService.update(category);
+    }
+
 }

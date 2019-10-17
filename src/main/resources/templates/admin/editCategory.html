@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head th:include="include/admin/adminHeader::html('编辑分类')"></head>
+<body>
+
+<div th:replace="include/admin/adminNavigator::html"></div>
+
+<script>
+    $(function(){
+        var data4Vue = {
+            uri: 'categories',
+			redirect_uri: 'admin_category_list',
+            bean: { id: 0, name: ''},
+            file: null
+        };
+
+        var vm = new Vue({
+            el:'#workingArea',
+            data: data4Vue,
+            mounted:function(){
+                this.getOne();
+            },
+            methods:{
+                getOne:function(){
+                    this.bean.id = getUrlParms("id");
+                    if(!checkEmpty("id",this.bean.id)){
+                        return false;
+                    }
+                    var url = this.uri + "/" + this.bean.id;
+                    axios.get(url).then(function(response){
+                        vm.bean = response.data;
+                    });
+                },
+                getFile:function(event){
+                    this.file = event.target.files[0];
+                },
+                updateOne:function(){
+                    if(!checkEmpty("分类id",this.bean.id)){
+                        return;
+                    }
+                    if(!checkEmpty("分类名称",this.bean.name)){
+                        return;
+                    }
+                    if(!checkEmpty("分类图片",this.file)){
+                        return;
+                    }
+                    //axios.js传文件要用FormData
+                    var url = this.uri;
+                    var formData = new FormData();
+                    formData.append("id",this.bean.id);
+                    formData.append("name",this.bean.name);
+                    formData.append("image",this.file);
+                    axios.put(url,formData).then(function(response){
+                        vm.getOne();
+                        vm.file = null;
+                        $("#categoryPic").val('');
+                    }).catch(function (error){
+                        check_error_type(error);
+                    });
+                }
+            }
+        });
+    });
+</script>
+
+<div class="workingArea" id="workingArea">
+
+	<ol class="breadcrumb">
+		<li><a href="admin_category_list">所有分类</a></li>
+		<li class="active">编辑分类</li>
+	</ol>
+
+	<div class="panel panel-warning editDiv">
+		<div class="panel-heading">编辑分类</div>
+		<div class="panel-body">
+			<!--<form method="post" id="editForm" action="admin_category_update"  enctype="multipart/form-data">-->
+				<table class="editTable">
+					<tr>
+						<td>分类名称</td>
+						<td><input  id="name" name="name" v-model="bean.name" type="text" class="form-control"></td>
+					</tr>
+					<tr>
+						<td>分类图片</td>
+						<td>
+							<input id="categoryPic" accept="image/*" type="file" name="image" @change="getFile($event)"/>
+						</td>
+					</tr>
+					<tr class="submitTR">
+						<td colspan="2" align="center">
+							<input type="hidden" name="id" v-model="bean.id">
+							<button type="submit" class="btn btn-success" @click="updateOne">提 交</button>
+						</td>
+					</tr>
+				</table>
+			<!--</form>-->
+		</div>
+	</div>
+</div>
+
+<div th:replace="include/admin/adminFooter::html"></div>
+
+</body>
+</html>
