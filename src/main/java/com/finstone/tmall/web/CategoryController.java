@@ -65,6 +65,17 @@ public class CategoryController {
     }
 
     /**
+     * 删除保存的图片
+     */
+    public void deleteArchivedImage(int id, HttpSession session) throws IOException {
+        File imageFolder = new File(session.getServletContext().getRealPath("img/category"));
+        File file = new File(imageFolder, id+".jpg");
+        if(file.exists()){
+            file.delete();
+        }
+    }
+
+    /**
      * 删除分类
      * {@link PathVariable}用来绑定URI模板变量.
      */
@@ -72,11 +83,7 @@ public class CategoryController {
     //@RequestMapping(method = RequestMethod.DELETE, value="/categories/{id}")
     public String delete(@PathVariable("id") int id, HttpSession session) throws IOException {
         categoryService.delete(id);
-        File imageFolder = new File(session.getServletContext().getRealPath("img/category"));
-        File file = new File(imageFolder, id+".jpg");
-        if(file.exists()){
-            file.delete();
-        }
+        deleteArchivedImage(id, session);
         return null;
     }
 
