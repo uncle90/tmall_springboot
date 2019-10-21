@@ -67,7 +67,7 @@ public class CategoryService {
      * 修改一条记录
      * 插入 vs 修改。JPA会先判断是否为新记录，是则merge（修改），否则persist（插入）。
      */
-    public Category update(Category category){
+    public Category save(Category category){
         return categoryDao.save(category);
     }
 

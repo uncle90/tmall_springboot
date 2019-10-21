@@ -45,13 +45,25 @@
                     if(!checkEmpty("分类图片",this.file)){
                         return;
                     }
-                    //axios.js传文件要用FormData
+                    /* axios.js传文件要用FormData
+                     * https://developer.mozilla.org/zh-CN/docs/Web/API/FormData/Using_FormData_Objects
+                     * https://blog.csdn.net/backbug/article/details/100608180#3_268
+                     * multipart表单和普通表单的不同，它会把表单分割成块，表单中的每个字段对应一个块，每个块都有自己的数据类型即Content-Type。
+                     */
                     var url = this.uri;
                     var formData = new FormData();
-                    formData.append("id",this.bean.id);
-                    formData.append("name",this.bean.name);
+                    formData.append("bean",new Blob([JSON.stringify(this.bean)],{type: "application/json"}));
                     formData.append("image",this.file);
-                    axios.put(url,formData).then(function(response){
+                    axios({
+                        method: 'put',
+                        url: url,
+                        data: formData,
+                        config:{
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        }
+                    }).then(function(response){ultipart/form-data
                         vm.getOne();
                         vm.file = null;
                         $("#categoryPic").val('');

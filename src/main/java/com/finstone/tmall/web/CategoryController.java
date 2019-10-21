@@ -99,14 +99,24 @@ public class CategoryController {
      * 修改一个分类
      * POST用来“增资源”，重复请求时，后一个请求不会覆盖前一个请求的结果；
      * PUT 用来“改资源”，重复请求时，后一个请求  会覆盖前一个请求的结果；
-     * 注：PUT请求需要
+     *
+     * 1、@RequestPart 用于将"multipart/form-data"请求和控制层方法参数绑定，
+     *   支持的方法参数类型包括：MultipartFile、MultipartResolver相关实现类等；
+     * 2、@RequestParam 也支持"multipart/form-data"请求，但参数类型不是String的时候，两者区别较大；
+     * 3、@RequestParam 适用于name-valueString类型的请求域，@RequestPart适用于复杂的请求域（像JSON，XML）。
      */
     @PutMapping(value="/categories")
-    public Object update(@RequestBody Category category, HttpSession session, MultipartFile image) throws Exception {
-        if(category.getId() == null){
-            return "111111";
+    public Object update(
+            @RequestPart("bean") Category category,
+            @RequestPart("image") MultipartFile image,
+            HttpSession session) throws Exception {
+        if(image==null){
+            return "请求有误，分类图片不能为空";
         }
-        return categoryService.update(category);
+        category = categoryService.save(category);
+        deleteArchivedImage(category.getId(), session);
+        saveUploadImage(category, session, image);
+        return category;
     }
 
 }
