@@ -92,7 +92,6 @@
                     }
                     var url = this.uri + "/" + id;
                     axios.delete(url).then(function(response){
-                        console.log(response.data);
                         if(0!=response.data.length){
                             alert(response.data);
                         }else{

@@ -81,7 +81,7 @@ public class CategoryController {
      */
     @DeleteMapping("/categories/{id}")
     //@RequestMapping(method = RequestMethod.DELETE, value="/categories/{id}")
-    public String delete(@PathVariable("id") int id, HttpSession session) throws IOException {
+    public Object delete(@PathVariable("id") int id, HttpSession session) throws IOException {
         categoryService.delete(id);
         deleteArchivedImage(id, session);
         return null;
