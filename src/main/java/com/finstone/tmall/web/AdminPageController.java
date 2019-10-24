@@ -11,6 +11,7 @@ public class AdminPageController {
         return "redirect:admin_category_list";
     }
 
+    //分类管理
     @GetMapping(value="/admin_category_list")
     public String listCategory(){
         return "admin/listCategory";
@@ -20,4 +21,16 @@ public class AdminPageController {
     public String editCategory(){
         return "admin/editCategory";
     }
+
+    //属性管理
+    @GetMapping(value="/admin_property_list")
+    public String listProperty(){
+        return "admin/listProperty";
+    }
+
+    @GetMapping(value="/admin_property_edit")
+    public String editProperty(){
+        return "admin/editProperty";
+    }
+
 }
