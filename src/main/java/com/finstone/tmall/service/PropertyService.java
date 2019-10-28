@@ -44,4 +44,20 @@ public class PropertyService {
         return ps;
     }
 
+    public Property add(Property property){
+        return propertyDao.save(property);
+    }
+
+    public void delete(Integer id){
+        propertyDao.delete(id);
+    }
+
+    public Property get(Integer id){
+        return propertyDao.findOne(id);
+    }
+
+    public Property update(Property property){
+        return propertyDao.save(property);
+    }
+
 }
