@@ -58,6 +58,8 @@ public class CategoryService {
     /**
      * 查询一条记录，如果不存在放回null
      * 注：与findOne不同，getOne返回的是reference（代理对象），所以当没有满足条件的记录时会报错。
+     * findOne（主键值）：底层调用的是em.find()        :立即加载
+     * getOne(主键值) ： 底层调用的是em.getReference() : 延迟加载
      */
     public Category get(int id){
         return categoryDao.findOne(id);
