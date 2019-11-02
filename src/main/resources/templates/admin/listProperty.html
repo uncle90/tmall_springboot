@@ -10,7 +10,7 @@
     $(function(){
         var cid = getUrlParms("cid");
         var data4Vue = {
-            category: {},//所属分类
+            category: '',//所属分类
             uri:'properties',
             pagination:{},//分页bean
             beans:[],     //分页数据列表
@@ -31,7 +31,7 @@
                         vm.bean.category = response.data;
                         vm.category = response.data;
                     });
-				},
+                },
                 list:function(start){
                     var url = "categories/" + cid + "/" + this.uri + "?start=" + start;
                     axios.get(url).then(function(response){
@@ -45,6 +45,27 @@
                     gotoPage(page,vm);
                 },
                 addOne:function(){
+                    if(!checkEmpty("属性名称",this.bean.name)){
+                        return;
+                    }
+                    var url = this.uri;
+                    axios.post(url,this.bean).then(function (value){
+                        vm.list(0);
+                        vm.bean = { id: 0, name: '', category: category};
+                    }).catch(function (error){
+                        check_error_type(error);
+                    });
+                },
+                deleteOne: function(id){
+                    if(!checkDeleteLink()){
+                        return;
+                    }
+                    var url = this.uri + "/" + id;
+                    axios.delete(url).then(function (value){
+                        vm.list(0);
+                    }).catch(function (error){
+                        check_error_type(error);
+                    });
                 }
             }
         });
@@ -75,8 +96,7 @@
 				<td>{{p.name}}</td>
 				<td><a :href="'admin_property_edit?id='+p.id"><span
 						class="glyphicon glyphicon-edit"></span></a></td>
-				<td><a deleteLink="true"
-					   :href="'admin_property_delete?id='+p.id"><span
+				<td><a deleteLink="true" href="javascript:void(0)" @click="deleteOne(p.id)"><span
 						class="glyphicon glyphicon-trash"></span></a></td>
 			</tr>
 			</tbody>
