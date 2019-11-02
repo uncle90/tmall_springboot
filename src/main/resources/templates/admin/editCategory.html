@@ -63,10 +63,11 @@
                                 'Content-Type': 'multipart/form-data'
                             }
                         }
-                    }).then(function(response){ultipart/form-data
-                        vm.getOne();
+                    }).then(function(response){
+                        /*vm.getOne();
                         vm.file = null;
-                        $("#categoryPic").val('');
+                        $("#categoryPic").val('');*/
+                        window.location.href = vm.redirect_uri;
                     }).catch(function (error){
                         check_error_type(error);
                     });
