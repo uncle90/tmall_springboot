@@ -113,7 +113,7 @@ public class CategoryController {
         if(image==null){
             return "请求有误，分类图片不能为空";
         }
-        category = categoryService.save(category);
+        category = categoryService.update(category);
         deleteArchivedImage(category.getId(), session);
         saveUploadImage(category, session, image);
         return category;
