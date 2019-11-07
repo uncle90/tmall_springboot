@@ -29,7 +29,6 @@
                     axios.get(url).then(function(response){
                         vm.category = response.data.category;
                         vm.bean = response.data;
-                        console.log(JSON.stringify(vm.bean));
                     }).catch(function (error){
                         check_error_type(error);
                     });

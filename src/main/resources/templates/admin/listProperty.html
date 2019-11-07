@@ -51,7 +51,7 @@
                     var url = this.uri;
                     axios.post(url,this.bean).then(function (value){
                         vm.list(0);
-                        vm.bean = { id: 0, name: '', category: category};
+                        vm.bean = { id: 0, name: '', category: vm.category};
                     }).catch(function (error){
                         check_error_type(error);
                     });

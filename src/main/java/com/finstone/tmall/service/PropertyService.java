@@ -23,8 +23,8 @@ public class PropertyService {
 
     public List<Property> list(){
         Sort sort = new Sort(Sort.Direction.DESC, "id");
-        List<Property> ps = propertyDao.findAll(sort);
-        return ps;
+        List<Property> pts = propertyDao.findAll(sort);
+        return pts;
     }
 
     /**
@@ -40,8 +40,8 @@ public class PropertyService {
         //Page page = propertyDao.findAll(pageable);
         Category category = categoryService.get(cid);
         Page page = propertyDao.findByCategory(category, pageable);
-        Page4JPA<Property> ps = new Page4JPA<Property>(page);
-        return ps;
+        Page4JPA<Property> pts = new Page4JPA<Property>(page);
+        return pts;
     }
 
     public Property add(Property property){
