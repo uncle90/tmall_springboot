@@ -33,13 +33,13 @@ public class ProductImageController {
      */
     @GetMapping("categories/{pid}/productimages")
     public List<ProductImage> list(@PathVariable(name="pid") int pid, @RequestParam(name="type") String type){
-        if("type_single".equals(type)){
+        if(ProductImageService.SINGLE.equals(type)){
             //单个（类）图片
-            List<ProductImage> pisSingle = productImageService.list(pid, "type_single");
+            List<ProductImage> pisSingle = productImageService.list(pid, ProductImageService.SINGLE);
             return pisSingle;
-        }else if("type_detail".equals(type)){
+        }else if(ProductImageService.DETAIL.equals(type)){
             //详情（类）图片
-            List<ProductImage> pisDetail = productImageService.list(pid, "type_detail");
+            List<ProductImage> pisDetail = productImageService.list(pid, ProductImageService.DETAIL);
             return pisDetail;
         }else{
             return new ArrayList<ProductImage>();
@@ -68,11 +68,11 @@ public class ProductImageController {
         String imageFolder;
         String imageFolder_middle = null;
         String imageFolder_small  = null;
-        if(ProductImageService.TYPE_SINGLE.equals(pi.getType())){
+        if(ProductImageService.SINGLE.equals(pi.getType())){
             imageFolder = session.getServletContext().getRealPath("img/productSingle");
             imageFolder_middle = session.getServletContext().getRealPath("img/productSingle_middle");
             imageFolder_small = session.getServletContext().getRealPath("img/productSingle_small");
-        }else if(ProductImageService.TYPE_SINGLE.equals(pi.getType())){
+        }else if(ProductImageService.DETAIL.equals(pi.getType())){
             imageFolder = session.getServletContext().getRealPath("img/productDetail");
         }else{
             throw new Exception("图片类型错误，保存失败。");
@@ -86,7 +86,7 @@ public class ProductImageController {
         image.transferTo(file);//接收上传文件
         BufferedImage img = ImageUtil.change2jpg(file);//转换为jpg格式
         ImageIO.write(img, "jpg", file);//保存为新格式
-        if(ProductImageService.TYPE_SINGLE.equals(pi.getType())){
+        if(ProductImageService.SINGLE.equals(pi.getType())){
             File file_middle = new File(imageFolder_middle,fileName);
             File file_smal = new File(imageFolder_small,fileName);
             if(!file_middle.getParentFile().exists()) file_middle.getParentFile().mkdirs();
@@ -109,14 +109,14 @@ public class ProductImageController {
         File file;
         File file_middle = null;
         File file_small  = null;
-        if(ProductImageService.TYPE_SINGLE.equals(pi.getType())){
+        if(ProductImageService.SINGLE.equals(pi.getType())){
             file = new File(session.getServletContext().getRealPath("img/productSingle"), fileName);
             file_middle = new File(session.getServletContext().getRealPath("img/productSingle_middle"), fileName);
             file_small  = new File(session.getServletContext().getRealPath("img/productSingle_small") , fileName);
             file.delete();
             file_middle.delete();
             file_small.delete();
-        }else if(ProductImageService.TYPE_DETAIL.equals(pi.getType())){
+        }else if(ProductImageService.DETAIL.equals(pi.getType())){
             file = new File(session.getServletContext().getRealPath("img/productDetail"), fileName);
             file.delete();
         }else{

@@ -14,8 +14,8 @@ import java.util.List;
 @Service
 public class ProductImageService {
 
-    public static String TYPE_SINGLE = "type_single";
-    public static String TYPE_DETAIL = "type_detail";
+    public static String SINGLE = "single";
+    public static String DETAIL = "detail";
 
     @Autowired
     ProductImageDao productImageDao;

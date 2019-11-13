@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head th:include="include/admin/adminHeader::html('产品图片管理')"></head>
+<body>
+
+<div th:replace="include/admin/adminNavigator::html"></div>
+
+<script>
+    $(function(){
+        var pid = getUrlParms("pid");
+        var data4Vue = {
+            category: {},//所属分类
+			product:{},//所属产品
+            uri:'productimages',
+			beansSingle:[],
+            beansDetail:[],
+            bean:{id:0,type:'',product:{id:0,name:''}},
+			file: null//上传文件
+        };
+
+        var vm = new Vue({
+            el:'#workingArea',
+            data: data4Vue,
+            mounted:function(){
+                this.getProduct();
+                this.listSingle();
+                this.listDetail();
+            },
+            methods:{
+                //查询
+                getProduct:function(){
+                    var url = "products" + "/" + pid;
+                    axios.get(url).then(function(response){
+                        vm.product = response.data;
+                        vm.category = response.data.category;
+                        vm.bean.product = vm.product;//放在mounted中无效
+
+                    });
+                },
+                listSingle:function(){
+                    var url = "categories/" + pid + "/" + this.uri + "?type=single";
+                    axios.get(url).then(function(response){
+                        vm.beansSingle = response.data;
+                    }).catch(function(error){
+                        check_error_type(error);
+                    });
+                },
+                listDetail:function(){
+                    var url = "categories/" + pid + "/" + this.uri + "?type=detail";
+                    axios.get(url).then(function(response){
+                        vm.beansDetail = response.data;
+                    }).catch(function(error){
+                        check_error_type(error);
+                    });
+                },
+                //新增
+				getFile:function(event){
+                    this.file = null;
+                    this.file = event.target.files[0];
+                },
+                addOne:function(type){
+                    if(!checkEmpty("图片文件",this.file)){
+                        return;
+					}
+					var url = this.uri;
+                    var formData = new FormData();
+                    formData.append("image", this.file);
+                    formData.append("type",type);
+                    formData.append("pid",this.product.id);
+                    axios.post(url,formData).then(function(response){
+                        //刷新图片列表
+                        if("single" == type){
+                            vm.listSingle();
+                        }else if("detail" == type){
+                            vm.listDetail();
+                        }
+                    }).catch(function (error){
+                        check_error_type(error);
+					}).finally(function(){
+                       //重置表单
+					    vm.file = null;
+                        $("#filepathSingle").val("");
+                        $("#filepathDetail").val("");
+					});
+                },
+				deleteOne:function(id,type){
+                    if(!checkDeleteLink()){
+                        return;
+					}
+                    var url = this.uri + "/" + id;
+                    axios.delete(url).then(function(response){
+                        //刷新图片列表
+                        if("single" == type){
+                            vm.listSingle();
+                        }else if("detail" == type){
+                            vm.listDetail();
+                        }
+                    });
+				}
+            }
+        });
+    });
+
+</script>
+
+<div class="workingArea" id="workingArea">
+	<ol class="breadcrumb">
+		<li><a href="admin_category_list">所有分类</a></li>
+		<li><a :href="'admin_product_list?cid='+category.id">{{category.name}}</a></li>
+		<li class="active">{{product.name}}</li>
+		<li class="active">产品图片管理</li>
+	</ol>
+
+	<table class="addPictureTable" align="center">
+		<tr>
+			<td class="addPictureTableTD">
+				<div>
+					<div class="panel panel-warning addPictureDiv">
+						<div class="panel-heading">新增产品<b class="text-primary"> 单个 </b>图片</div>
+						<div class="panel-body">
+								<table class="addTable">
+									<tr>
+										<td>请选择本地图片 尺寸400X400 为佳</td>
+									</tr>
+									<tr>
+										<td>
+											<input id="filepathSingle" type="file" name="image" @change="getFile($event)"/>
+										</td>
+									</tr>
+									<tr class="submitTR">
+										<td align="center">
+											<input type="hidden" name="pid" v-modal="bean.pid" />
+											<button type="submit" class="btn btn-success" @click="addOne('single')">提 交</button>
+										</td>
+									</tr>
+								</table>
+						</div>
+					</div>
+					<table class="table table-striped table-bordered table-hover table-condensed">
+						<thead>
+						<tr class="success">
+							<th>ID</th>
+							<th>产品单个图片缩略图</th>
+							<th>删除</th>
+						</tr>
+						</thead>
+						<tbody>
+							<tr v-for="pi in beansSingle">
+								<td>{{pi.id}}</td>
+								<td>
+									<a title="点击查看原图" :href="'img/productSingle/'+pi.id+'.jpg'">
+										<img height="50px" :src="'img/productSingle/'+pi.id+'.jpg'">
+									</a>
+								</td>
+								<td><a deleteLink="true" href="javascript:void(0);" @click="deleteOne(pi.id,'single')"><span class="glyphicon glyphicon-trash"></span></a></td>
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+			</td>
+			<td class="addPictureTableTD">
+				<div>
+					<div class="panel panel-warning addPictureDiv">
+						<div class="panel-heading">新增产品<b class="text-primary"> 详情 </b>图片</div>
+						<div class="panel-body">
+								<table class="addTable">
+									<tr>
+										<td>请选择本地图片 宽度790  为佳</td>
+									</tr>
+									<tr>
+										<td>
+											<input id="filepathDetail"  type="file" name="image" @change="getFile($event)"/>
+										</td>
+									</tr>
+									<tr class="submitTR">
+										<td align="center">
+											<input type="hidden" name="pid" v-modal="bean.pid" />
+											<button type="submit" class="btn btn-success" @click="addOne('detail')">提 交</button>
+										</td>
+									</tr>
+								</table>
+						</div>
+					</div>
+					<table class="table table-striped table-bordered table-hover table-condensed">
+						<thead>
+						<tr class="success">
+							<th>ID</th>
+							<th>产品详情图片缩略图</th>
+							<th>删除</th>
+						</tr>
+						</thead>
+						<tbody>
+							<tr v-for="pi in beansDetail">
+								<td>{{pi.id}}</td>
+								<td>
+									<a title="点击查看原图" :href="'img/productDetail/'+pi.id+'.jpg'">
+										<img height="50px" :src="'img/productDetail/'+pi.id+'.jpg'">
+									</a>
+								</td>
+								<td>
+									<a deleteLink="true" href="javascript:void(0);" @click="deleteOne(pi.id,'detail')">
+										<span class="glyphicon glyphicon-trash"></span>
+									</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</td>
+		</tr>
+	</table>
+
+</div>
+
+
+<div th:replace="include/admin/adminFooter::html"></div>
+
+</body>
+</html>
