@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<!-- 引入thymeleaf模板 -->
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<!-- 以templates为根目录，引用指定thymeleaf模板中名为"html"的内容，但保留当前标签（inclue）。 -->
+<head th:include="include/admin/adminHeader::html('编辑产品属性值')"></head>
+<body>
+
+<!-- 以templates为根目录，用指定thymeleaf模板中名为"html"的内容，替换当前标签（replace） -->
+<div th:replace="include/admin/adminNavigator::html"></div>
+
+<script>
+    $(function(){
+        var pid = getUrlParms("pid");
+        var data4Vue = {
+            category: {},//所属分类
+            product:{},//所属产品
+            uri:'propertyvalues',
+            beans:[]
+        };
+
+        var vm = new Vue({
+            el:'#workingArea',
+            data: data4Vue,
+            mounted:function(){
+                this.getProduct();
+                this.list();
+            },
+            methods:{
+                //查询
+                getProduct:function(){
+                    var url = "products" + "/" + pid;
+                    axios.get(url).then(function(response){
+                        vm.product = response.data;
+                        vm.category = response.data.category;
+                    });
+                },
+                list:function(){
+                    var url = "products/" + pid + "/" + this.uri;
+                    axios.get(url).then(function(value){
+                        vm.beans = value.data;
+                    }).catch(function (reason){
+                        check_error_type(error);
+                    });
+                },
+                updateOne:function(bean){
+                    var url = this.uri;
+                    $("#pvid"+bean.id).css("border","2px solid yellow");
+                    axios.put(url,bean).then(function(response){
+                        if(bean.id==response.data.id){
+                            $("#pvid"+bean.id).css("border","2px solid green")
+                        }else{
+                            $("#pvid"+bean.id).css("border","2px solid red");
+                        }
+                    }).catch(function (error){
+                        check_error_type(error);
+                    });
+                }
+            }
+        })
+    });
+
+</script>
+
+<div class="workingArea" id="workingArea">
+    <ol class="breadcrumb">
+        <li><a href="admin_category_list">所有分类</a></li>
+        <li><a :href="'admin_product_list?cid='+category.id">{{category.name}}</a></li>
+        <li class="active">{{product.name}}</li>
+        <li class="active">编辑产品属性</li>
+    </ol>
+
+    <div class="editPVDiv">
+        <template v-for="bean in beans">
+            <div class="eachPV">
+                <span class="pvName" >{{bean.property.name}}</span>
+                <span class="pvValue"><input class="pvValue" :id="'pvid'+bean.id" type="text" v-model="bean.value" @keyup="updateOne(bean)"></span>
+            </div>
+        </template>
+        <div style="clear:both"></div>
+    </div>
+</div>
+
+
+<div th:replace="include/admin/adminFooter::html"></div>
+
+</body>
+</html>

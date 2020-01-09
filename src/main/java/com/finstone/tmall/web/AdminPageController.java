@@ -45,13 +45,18 @@ public class AdminPageController {
     }
 
     //产品图片管理
-    /*
-    admin_productImage_list listProductImage
-    admin_productImage_add
-     */
-    @GetMapping(value = "admin_productImage_list")
+    @GetMapping(value = "/admin_productImage_list")
     public String listProductImage(){
         return "admin/listProductImage";
+    }
+
+    //产品属性值管理
+    /*
+    admin_propertyValue_edit
+     */
+    @GetMapping(value = "admin_propertyValue_edit")
+    public String listPropertyValue(){
+        return "admin/editPropertyValue";
     }
 
 

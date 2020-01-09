@@ -21,6 +21,9 @@ public class PropertyService {
     @Autowired
     CategoryService categoryService;
 
+    @Autowired
+    PropertyValueService propertyValueService;
+
     public List<Property> list(){
         Sort sort = new Sort(Sort.Direction.DESC, "id");
         List<Property> pts = propertyDao.findAll(sort);
@@ -48,7 +51,15 @@ public class PropertyService {
         return propertyDao.save(property);
     }
 
+    /**
+     * 删除指定属性，及所有相关产品的属性值
+     * @param id 属性编号
+     */
     public void delete(Integer id){
+        //删除所有属性值（外键）
+        Property property = propertyDao.getOne(id);
+        propertyValueService.delete(property);
+        //删除属性
         propertyDao.delete(id);
     }
 
@@ -60,4 +71,14 @@ public class PropertyService {
         return propertyDao.save(property);
     }
 
+    /**
+     * 查询指定分类下的所有属性（名）
+     * @param cid
+     * @return
+     */
+    public List<Property> list(Integer cid){
+        Category category = categoryService.get(cid);
+        List<Property> pts = propertyDao.findByCategory(category);
+        return pts;
+    }
 }
