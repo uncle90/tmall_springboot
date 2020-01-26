@@ -65,4 +65,10 @@ public class AdminPageController {
         return "admin/listUser";
     }
 
+    //订单管理
+    @GetMapping(value = "admin_order_list")
+    public String listOrder(){
+        return "admin/listOrder";
+    }
+
 }

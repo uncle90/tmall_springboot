@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head th:include="include/admin/adminHeader::html('订单管理')"></head>
+<body>
+
+<div th:replace="include/admin/adminNavigator::html"></div>
+
+<script>
+    $(function () {
+        var data4Vue = {
+            uri: 'orders',
+            pagination: {},
+            beans: []
+        };
+
+        var vm = new Vue({
+            el:'#workingArea',
+            data: data4Vue,
+            mounted:function () {
+                this.list(0);
+            },
+            methods:{
+                list:function (start) {
+                    var url = this.uri + "?start=" + start;
+                    axios.get(url).then(function (response) {
+                        vm.pagination = response.data;
+                        vm.beans = response.data.content;
+                    }).catch(function (error){
+                        check_error_type(error);
+                    });
+                },
+                gotoPage:function (page) {
+                    gotoPage(page,vm);
+                },
+                orderItemToggle:function (id) {
+                    $("tr.orderPageOrderItemTR[oid="+id+"]").toggle();
+                },
+                delivery:function(bean,e){
+                    var url = this.uri + "/delivery/" + bean.id;
+                    axios.put(url).then(function (response) {
+                        var data = response.data;
+                        if(data.code < 0){
+                            alert(data.msg);
+                        }else{
+                            $(e.target).hide();//发货成功，隐藏操作按钮
+                            vm.list(0);
+                            alert("发货成功");
+                        }
+                    }).catch(function (error){
+                        check_error_type(error);
+                    });
+                }
+            }
+        });
+
+        //定义全局过滤器，格式化时间
+        Vue.filter('dateformat', function (value, pattern) {
+            return value;
+            if(null==value){
+                return "";
+            }
+            pattern = pattern || 'YYYY-MM-DD HH:mm:ss'
+            return moment(value).format(pattern);
+        });
+
+        /*//订单项是由vue模板渲染生产，用jquery button点击事件操作有问题，获取不到DOM。
+        $("button.orderPageCheckOrderItems").click(function(){
+            var oid = $(this).attr("oid");
+            $("tr.orderPageOrderItemTR[oid="+oid+"]").toggle();
+        });*/
+    });
+</script>
+
+<div class="workingArea" id="workingArea">
+    <h1 class="label label-info" >订单管理</h1>
+    <br>
+    <br>
+
+    <div class="listDataTableDiv">
+        <table class="table table-striped table-bordered table-hover1 table-condensed">
+            <thead>
+            <tr class="success">
+                <th>ID</th>
+                <th>状态</th>
+                <th>金额</th>
+                <th width="100px">商品数量</th>
+                <th width="100px">买家名称</th>
+                <th>创建时间</th>
+                <th>支付时间</th>
+                <th>发货时间</th>
+                <th>确认收货时间</th>
+                <th width="120px">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+                <template v-for="o in beans">
+                    <tr>
+                        <td>{{o.id}}</td>
+                        <td>{{o.statusDesc}}</td>
+                        <td>{{o.total}}</td>
+                        <td align="center">{{o.totalNumber}}</td>
+                        <td align="center">{{o.user.name}}</td>
+                        <td>{{o.createDate | dateformat}}</td>
+                        <td>{{o.payDate | dateformat}}</td>
+                        <td>{{o.deliveryDate | dateformat}}</td>
+                        <td>{{o.confirmDate | dateformat}}</td>
+                        <td>
+                            <button :oid="o.id" class="orderPageCheckOrderItems btn btn-primary btn-xs" @click="orderItemToggle(o.id)">查看详情</button>
+                            <a v-if="o.status=='waitDelivery'" @click="delivery(o,$event)">
+                                <button class="btn btn-primary btn-xs">发货</button>
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr class="orderPageOrderItemTR" :oid="o.id">
+
+                        <td colspan="10" align="center">
+                            <div class="orderPageOrderItem">
+                                <table width="800px" align="center" class="orderPageOrderItemTable">
+                                    <tr v-for="oi in o.orderItems">
+                                        <td align="left">
+                                            <!--<img width="40px" height="40px" :src="'img/productSingle/'+oi.product.firstProductImage.id+'.jpg'">-->
+                                        </td>
+                                        <td>
+                                            <a :href="'foreproduct?pid='+oi.product.id">
+                                                <span>{{oi.product.name}}</span>
+                                            </a>
+                                        </td>
+                                        <td align="right">
+                                            <span class="text-muted">{{oi.number}}个</span>
+                                        </td>
+                                        <td align="right">
+                                            <span class="text-muted">单价：￥{{oi.product.promotePrice}}</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:replace="include/admin/adminPage::html"></div>
+
+</div>
+
+<div th:replace="include/admin/adminFooter::html"></div>
+
+</body>
+</html>
