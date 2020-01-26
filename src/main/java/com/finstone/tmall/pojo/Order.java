@@ -30,7 +30,7 @@ public class Order {
     /**
      * 订单创建时间
      * @JsonFormat     后台时间 ==> 前后时间
-     * @DateTimeFormat 前后时间 ==> 后台时间
+     * @DateTimeFormat 前台时间 ==> 后台时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
