@@ -55,8 +55,7 @@
         });
 
         //定义全局过滤器，格式化时间
-        Vue.filter('dateformat', function (value, pattern) {
-            return value;
+        Vue.filter('formatDateFilter', function (value, pattern) {
             if(null==value){
                 return "";
             }
@@ -101,10 +100,10 @@
                         <td>{{o.total}}</td>
                         <td align="center">{{o.totalNumber}}</td>
                         <td align="center">{{o.user.name}}</td>
-                        <td>{{o.createDate | dateformat}}</td>
-                        <td>{{o.payDate | dateformat}}</td>
-                        <td>{{o.deliveryDate | dateformat}}</td>
-                        <td>{{o.confirmDate | dateformat}}</td>
+                        <td>{{o.createDate | formatDateFilter}}</td>
+                        <td>{{o.payDate | formatDateFilter}}</td>
+                        <td>{{o.deliveryDate | formatDateFilter}}</td>
+                        <td>{{o.confirmDate | formatDateFilter}}</td>
                         <td>
                             <button :oid="o.id" class="orderPageCheckOrderItems btn btn-primary btn-xs" @click="orderItemToggle(o.id)">查看详情</button>
                             <a v-if="o.status=='waitDelivery'" @click="delivery(o,$event)">
