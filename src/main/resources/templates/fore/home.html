@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<!-- 以templates为根目录，引用指定thymeleaf模板中名为"html"的内容，但保留当前标签（inclue）。 -->
+<head th:include="include/fore/header::html('模仿天猫官网')"></head>
+<body>
+    <!-- 以templates为根目录，用指定thymeleaf模板中名为"html"的内容，替换当前标签（replace） -->
+    <div th:replace="include/fore/top::html"></div>
+
+    <div th:replace="include/fore/search::html"></div>
+
+    <div th:replace="include/fore/home/homePage::html"></div>
+
+    <div th:replace="include/fore/footer::html"></div>
+</body>
+</html>
