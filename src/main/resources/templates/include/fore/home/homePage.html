@@ -1,6 +1,26 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <!-- 定义名为"html"的模板片段 -->
 <div class="homepageDiv" th:fragment="html">
+	<script>
+		$(function () {
+		    var data4Vue = {
+		        uri: '',
+				beans: []
+			}
+
+			var vm = new Vue({
+                el:'#workingArea',
+				data: data4Vue,
+				mounted:function () {
+                },
+				methods:{
+                    //查询所有分类
+					//各类别的商品集合
+					//各类别的热销商品
+				}
+			});
+        });
+	</script>
 	<div th:replace="include/fore/home/categoryAndcarousel::html"></div>
 	<div th:replace="include/fore/home/homepageCategoryProducts::html"></div>
 </div>

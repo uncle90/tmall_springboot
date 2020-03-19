@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,6 +30,15 @@ public class ProductService {
 
     public List<Product> list(){
         return productDao.findAll();
+    }
+
+    /**
+     * 查询某个分类下的所有产品
+     * @return
+     */
+    public List<Product> list(Category category){
+        List<Product> ps = productDao.findByCategory(category);
+        return ps;
     }
 
     /**
@@ -57,6 +67,44 @@ public class ProductService {
 
     public Product update(Product product){
         return productDao.save(product);
+    }
+
+    /**
+     * 为某个分类填充产品集合
+     * @param category
+     */
+    public void fillProducts(Category category){
+        List<Product> ps = this.list(category);
+        category.setProducts(ps);
+    }
+
+    /**
+     * 为多个分类填充产品集合
+     * @param cs
+     */
+    public void fillProducts(List<Category> cs){
+        for(Category category: cs){
+            fillProducts(category);
+        }
+    }
+
+    /**
+     * 为多个分类填充推荐产品集合，8个一行。
+     * @param cs
+     */
+    public void fillProductsByRow(List<Category> cs){
+        int productNumberEachRow = 8;
+        for(Category category: cs){
+            List<Product> ps = this.list(category);
+            List<List<Product>> productsByRow = new ArrayList<>();
+            for(int i = 0; i < ps.size(); i+=productNumberEachRow){
+                int end = i + productNumberEachRow>ps.size()?
+                        ps.size():i+productNumberEachRow;
+                List<Product> productsOfRow = ps.subList(i,end);
+                productsByRow.add(productsOfRow);
+            }
+            category.setProductsByRow(productsByRow);
+        }
     }
 
 }

@@ -2,12 +2,8 @@ package com.finstone.tmall.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * 参考：
@@ -40,6 +36,18 @@ public class Category {
 
     private String name;
 
+    /**
+     * 非数据库字段：指定分类下的所有产品
+     */
+    @Transient
+    private List<Product> products;
+
+    /**
+     * 非数据库字段：指定分类下的热销产品（首页），按行分组
+     */
+    @Transient
+    private List<List<Product>> productsByRow;
+
     public Integer getId() {
         return id;
     }
@@ -54,5 +62,21 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public List<List<Product>> getProductsByRow() {
+        return productsByRow;
+    }
+
+    public void setProductsByRow(List<List<Product>> productsByRow) {
+        this.productsByRow = productsByRow;
     }
 }
