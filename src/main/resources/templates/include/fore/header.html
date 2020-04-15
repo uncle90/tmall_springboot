@@ -21,6 +21,7 @@
 	<!--自定义js-->
 	<script>
         function formatMoney(num){
+            num = new String(num);
             num = num.toString().replace(/\$|\,/g,'');
             if(isNaN(num))
                 num = "0";
@@ -35,6 +36,7 @@
                     num.substring(num.length-(4*i+3));
             return (((sign)?'':'-') + num + '.' + cents);
         }
+
         function checkEmpty(id, name){
             var value = $("#"+id).val();
             if(value.length==0){
@@ -77,7 +79,9 @@
         });
 
         //定义全局过滤器-截取字符串
-		Vue.filter('subStringFilter', function () {
+		Vue.filter('subStringFilter', function (value,start,length) {
+		    if(!value) return "";
+		    return value.substr(start, length);
         });
 
 		//定义全局过滤器-格式化日期
@@ -91,7 +95,8 @@
         });
 
         //定义全局过滤器-格式化金额
-        Vue.filter('formatMoneyFilter', function () {
+        Vue.filter('formatMoneyFilter', function (value) {
+            return formatMoney(value);
         });
 
 	</script>

@@ -1,5 +1,7 @@
 package com.finstone.tmall.pojo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -34,8 +36,8 @@ public class Product {
     @Column(name="stock")
     private Integer stock;
 
-    /*@Column(name="cid")
-    private Integer cid;*/
+    /*首页查询分类及下属产品时，切断递归调用，避免Json序列化时栈溢出*/
+    @JsonBackReference
     /*非数据库字段：在属性查询页、添加页、编辑页提供关联信息，包括category.id、category.name等。*/
     @ManyToOne
     @JoinColumn(name="cid")
