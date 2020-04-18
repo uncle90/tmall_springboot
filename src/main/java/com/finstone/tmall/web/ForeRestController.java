@@ -32,8 +32,9 @@ public class ForeRestController {
         //查询每个分类下的热销商品，并按行分组，一行最多8个。
         productService.fillProductsByRow(cs);
 
-        //去除Product中的Category属性，避免在JSON序列化时无限递归
-        //@JsonBackReference
+        //去除Category.product中的Category属性，避免在JSON序列化时无限递归
+        //@JsonBackReference太彻底，导致部分场景无法使用，改用需要时手动切断递归
+        categoryService.removeCategoryFromProduct(cs);
 
         return cs;
     }
