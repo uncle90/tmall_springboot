@@ -26,5 +26,19 @@
 			<span style="color:#C40000;margin:0px" class=" glyphicon glyphicon-shopping-cart redColor"></span>
 				购物车<strong>${cartTotalItemNumber}</strong><c:if test="${!empty cartTotalItemNumber}">件</c:if></a>
 		</span>-->
+
+			<a href="loginPage">${user.name}</a>
+			<a href="forelogout">退出</a>
+			<a href="loginPage">请登录</a>
+			<a href="registerPage">免费注册</a>
+
+
+		<span class="pull-right">
+			<a href="forebought">我的订单</a>
+			<a href="forecart">
+			<span style="color:#C40000;margin:0px" class=" glyphicon glyphicon-shopping-cart redColor"></span>
+				购物车<strong></strong></a>
+		</span>
+
 	</div>
 </nav>

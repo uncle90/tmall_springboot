@@ -61,6 +61,11 @@ nav.top div.row div {
 	text-align: center;
 }
 
+div.top_middle{
+	max-width:1024px;
+	margin:0px auto;
+}
+
 div.searchDiv {
 	background-color: #C40000;
 	width: 400px;
@@ -245,9 +250,9 @@ img.catear {
 
 img.logo {
 	position: absolute;
-	left: 0px;
-	top: 30px;
-/* 	z-index:-1; */
+	left: 80px;
+	top: 28px;
+ 	z-index:-1;
 }
 
 div.homepageCategoryProducts {
@@ -1316,13 +1321,13 @@ textarea.leaveMessageTextarea {
 }
 
 span.leaveMessageText {
-	display: inilne-block;
+	display: inline-block;
 	margin-right: 10px;
 	float: left;
 }
 
 span.leaveMessageTextareaSpan {
-	display: inilne-block;
+	display: inline-block;
 }
 
 div.orderItemTotalSumDiv {
