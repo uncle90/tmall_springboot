@@ -1,5 +1,7 @@
 package com.finstone.tmall.pojo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,6 +14,7 @@ public class ProductImage {
 
     @ManyToOne
     @JoinColumn(name="pid")
+    @JsonBackReference
     private Product product;
 
     @Column(name="type")

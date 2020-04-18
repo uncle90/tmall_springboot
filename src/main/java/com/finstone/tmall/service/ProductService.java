@@ -1,10 +1,7 @@
 package com.finstone.tmall.service;
 
 import com.finstone.tmall.dao.ProductDao;
-import com.finstone.tmall.pojo.Category;
-import com.finstone.tmall.pojo.Page4JPA;
-import com.finstone.tmall.pojo.Product;
-import com.finstone.tmall.pojo.Property;
+import com.finstone.tmall.pojo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +20,9 @@ public class ProductService {
 
     @Autowired
     CategoryService categoryService;
+
+    @Autowired
+    ProductImageService productImageService;
 
     public Product get(Integer id){
         return productDao.findOne(id);
@@ -54,6 +54,9 @@ public class ProductService {
         Category category = categoryService.get(cid);
         Page<Product> page = productDao.findByCategory(category, pageable);
         Page4JPA<Product> ps = new Page4JPA<>(page);
+        //添加商品封面图片
+        List<Product> products = ps.getContent();
+        this.setFirstProductImage(products);
         return ps;
     }
 
@@ -75,6 +78,7 @@ public class ProductService {
      */
     public void fillProducts(Category category){
         List<Product> ps = this.list(category);
+        this.setFirstProductImage(ps);//添加商品封面图片
         category.setProducts(ps);
     }
 
@@ -104,6 +108,21 @@ public class ProductService {
                 productsByRow.add(productsOfRow);
             }
             category.setProductsByRow(productsByRow);
+        }
+    }
+
+    //设置产品的封面图片，取id最大的type_single类图片
+    void setFirstProductImage(Product product){
+        List<ProductImage> pis = productImageService.list(product.getId(), ProductImageService.SINGLE);
+        if(null != pis && !pis.isEmpty()){
+            ProductImage pi = pis.get(0);
+            product.setFirstProductImage(pi);
+        }
+    }
+
+    void setFirstProductImage(List<Product> ps){
+        for(Product product: ps){
+            this.setFirstProductImage(product);
         }
     }
 

@@ -36,8 +36,9 @@ public class Product {
     @Column(name="stock")
     private Integer stock;
 
-    /*首页查询分类及下属产品时，切断递归调用，避免Json序列化时栈溢出*/
-    @JsonBackReference
+    /*首页查询分类及下属产品时，切断递归调用，避免Json序列化时栈溢出。
+    @JsonBackReference太彻底，导致部分场景无法使用，改用需要时手动切断递归*/
+    //@JsonBackReference
     /*非数据库字段：在属性查询页、添加页、编辑页提供关联信息，包括category.id、category.name等。*/
     @ManyToOne
     @JoinColumn(name="cid")
@@ -46,14 +47,17 @@ public class Product {
     @Column(name="createDate")
     private Date createDate;
 
-//    /*非数据库字段：在首页、产品列表页等显示封面图片*/
-//    private ProductImage firstProductImage;
-//
-//    /*非数据库字段：单个产品图片集*/
-//    private List<ProductImage> productSingleImages;
-//
-//    /*非数据库字段：产品详情图片集*/
-//    private List<ProductImage> productDetailImages;
+    /*非数据库字段：在首页、产品列表页等显示封面图片*/
+    @Transient
+    private ProductImage firstProductImage;
+
+    /*非数据库字段：单个产品图片集*/
+    @Transient
+    private List<ProductImage> productSingleImages;
+
+    /*非数据库字段：产品详情图片集*/
+    @Transient
+    private List<ProductImage> productDetailImages;
 
     /*非数据库字段：销量*/
     @Transient
@@ -111,14 +115,6 @@ public class Product {
         this.stock = stock;
     }
 
-    /*public Integer getCid() {
-        return cid;
-    }
-
-    public void setCid(Integer cid) {
-        this.cid = cid;
-    }*/
-
     public Date getCreateDate() {
         return createDate;
     }
@@ -135,29 +131,29 @@ public class Product {
         this.category = category;
     }
 
-//    public ProductImage getFirstProductImage() {
-//        return firstProductImage;
-//    }
-//
-//    public void setFirstProductImage(ProductImage firstProductImage) {
-//        this.firstProductImage = firstProductImage;
-//    }
-//
-//    public List<ProductImage> getProductSingleImages() {
-//        return productSingleImages;
-//    }
-//
-//    public void setProductSingleImages(List<ProductImage> productSingleImages) {
-//        this.productSingleImages = productSingleImages;
-//    }
-//
-//    public List<ProductImage> getProductDetailImages() {
-//        return productDetailImages;
-//    }
-//
-//    public void setProductDetailImages(List<ProductImage> productDetailImages) {
-//        this.productDetailImages = productDetailImages;
-//    }
+    public ProductImage getFirstProductImage() {
+        return firstProductImage;
+    }
+
+    public void setFirstProductImage(ProductImage firstProductImage) {
+        this.firstProductImage = firstProductImage;
+    }
+
+    public List<ProductImage> getProductSingleImages() {
+        return productSingleImages;
+    }
+
+    public void setProductSingleImages(List<ProductImage> productSingleImages) {
+        this.productSingleImages = productSingleImages;
+    }
+
+    public List<ProductImage> getProductDetailImages() {
+        return productDetailImages;
+    }
+
+    public void setProductDetailImages(List<ProductImage> productDetailImages) {
+        this.productDetailImages = productDetailImages;
+    }
 
     public int getSaleCount() {
         return saleCount;
