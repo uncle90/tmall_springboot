@@ -8,9 +8,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties({"handler","hibernateLazyInitializer"})
 public class ResponseEntity {
 
-    /**
-     * code >=0 成功, <0 失败;
-     */
+    public static int SUCCESS_CODE = 0;
+
+    public static int FAIL_CODE = -1;
+
     int code;
 
     String msg;
@@ -54,4 +55,16 @@ public class ResponseEntity {
     public void setData(Object data) {
         this.data = data;
     }
+
+    //成功、失败响应体
+    public static ResponseEntity success() {
+        return new ResponseEntity(SUCCESS_CODE,null,null);
+    }
+    public static ResponseEntity success(Object data) {
+        return new ResponseEntity(SUCCESS_CODE,"",data);
+    }
+    public static ResponseEntity fail(String message) {
+        return new ResponseEntity(FAIL_CODE, message,null);
+    }
+
 }
