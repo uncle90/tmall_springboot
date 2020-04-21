@@ -474,7 +474,7 @@ div.loginErrorMessageDiv {
     width: 300px;
     position: absolute;
     top: 20px;
-    display: none;
+    visibility: hidden;
 }
 
 div.loginErrorMessageDiv div.alert {

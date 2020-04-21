@@ -18,7 +18,7 @@ public class User {
     private String name;
 
     //不放在JSON中输出到前台
-    @JsonIgnore
+    //@JsonIgnore
     private String password;
 
     @JsonIgnore

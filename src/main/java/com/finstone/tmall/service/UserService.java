@@ -28,6 +28,11 @@ public class UserService {
         return userDao.findOne(id);
     }
 
+    //检查登录用户名+密码
+    public User get(String name, String password){
+        return userDao.findByNameAndPassword(name, password);
+    }
+
     public User add(User user){
         return userDao.save(user);
     }
@@ -40,5 +45,10 @@ public class UserService {
         return userDao.save(user);
     }
 
+    //判断用户名是否被占用
+    public boolean isExist(String name){
+        User user = userDao.findByName(name);
+        return user!=null;
+    }
 
 }

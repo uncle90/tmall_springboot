@@ -1,12 +1,15 @@
 package com.finstone.tmall.web;
 
 import com.finstone.tmall.pojo.Category;
+import com.finstone.tmall.pojo.ResponseEntity;
+import com.finstone.tmall.pojo.User;
 import com.finstone.tmall.service.CategoryService;
 import com.finstone.tmall.service.ProductService;
+import com.finstone.tmall.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -21,6 +24,13 @@ public class ForeRestController {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    UserService userService;
+
+    /**
+     * 首页商品信息
+     * @return
+     */
     @GetMapping("forehome")
     public Object forehome(){
         //查询所有分类
@@ -39,7 +49,30 @@ public class ForeRestController {
         return cs;
     }
 
+    /**
+     * 登录
+     */
+    @PostMapping("forelogin")
+    public ResponseEntity forelogin(@RequestBody User user, HttpSession session){
+        User userCheck = userService.get(user.getName(), user.getPassword());
+        if(userCheck == null){
+            return ResponseEntity.fail("账号密码错误");
+        }else{
+            session.setAttribute("user", user);
+            return ResponseEntity.success("登录成功");
+        }
+    }
 
-
+    /**
+     * 注册
+     */
+    @PostMapping("register")
+    public ResponseEntity foreregister(@RequestBody User user){
+        if(userService.isExist(user.getName())){
+            return ResponseEntity.fail("用户名已经被使用");
+        }
+        userService.add(user);
+        return ResponseEntity.success("注册成功");
+    }
 
 }
