@@ -3,6 +3,7 @@ package com.finstone.tmall.service;
 import com.finstone.tmall.dao.OrderItemDao;
 import com.finstone.tmall.pojo.Order;
 import com.finstone.tmall.pojo.OrderItem;
+import com.finstone.tmall.pojo.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +50,20 @@ public class OrderItemService {
         }
         order.setTotalNumber(count);
         order.setTotal(total);
+    }
+
+    /**
+     * 合计指定产品的销量
+     * @param product
+     * @return
+     */
+    public int getSaleCount(Product product){
+        int saleCount = 0;
+        List<OrderItem> ois = orderItemDao.findByProduct(product);
+        for(OrderItem orderItem: ois){
+            saleCount += orderItem.getNumber();
+        }
+        return saleCount;
     }
 
 }

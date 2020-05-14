@@ -63,4 +63,9 @@ public class ForePageController {
         return "redirect:home";
     }
 
+    @RequestMapping("foreproduct")
+    public String foreproduct(){
+        return "fore/product";
+    }
+
 }

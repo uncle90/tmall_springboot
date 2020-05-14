@@ -1,16 +1,14 @@
 package com.finstone.tmall.web;
 
-import com.finstone.tmall.pojo.Category;
-import com.finstone.tmall.pojo.ResponseEntity;
-import com.finstone.tmall.pojo.User;
-import com.finstone.tmall.service.CategoryService;
-import com.finstone.tmall.service.ProductService;
-import com.finstone.tmall.service.UserService;
+import com.finstone.tmall.pojo.*;
+import com.finstone.tmall.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 前台页面（买家视角）涉及到的 restful 风格接口 api
@@ -26,6 +24,15 @@ public class ForeRestController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    ProductImageService productImageService;
+
+    @Autowired
+    PropertyValueService propertyValueService;
+
+    @Autowired
+    ReviewService reviewService;
 
     /**
      * 首页商品信息
@@ -73,6 +80,37 @@ public class ForeRestController {
         }
         userService.add(user);
         return ResponseEntity.success("注册成功");
+    }
+
+    /**
+     * 商品详情及评价信息
+     * @param pid
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("foreproduct/{pid}")
+    public ResponseEntity product(@PathVariable("pid") int pid) throws Exception{
+        //产品&图片信息
+        Product product = productService.get(pid);
+        List<ProductImage> pisSingle = productImageService.list(pid, ProductImageService.SINGLE); //单个（类）图片
+        product.setProductSingleImages(pisSingle);
+        List<ProductImage> pisDetail = productImageService.list(pid, ProductImageService.DETAIL); //详情（类）图片
+        product.setProductDetailImages(pisDetail);
+
+        //商品详情（产品属性）
+        List<PropertyValue> pvs = propertyValueService.list(pid);
+
+        //产品评价
+        List<Review> reviews = reviewService.list(pid);
+
+        //销量和累计评价
+        productService.setSaleCountAndReviewCount(product);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("product",product);
+        map.put("psv",pvs);
+        map.put("reviews",reviews);
+        return ResponseEntity.success(map);
     }
 
 }

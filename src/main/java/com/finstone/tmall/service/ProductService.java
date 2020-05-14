@@ -24,6 +24,12 @@ public class ProductService {
     @Autowired
     ProductImageService productImageService;
 
+    @Autowired
+    OrderItemService orderItemService;
+
+    @Autowired
+    ReviewService reviewService;
+
     public Product get(Integer id){
         return productDao.findOne(id);
     }
@@ -124,6 +130,24 @@ public class ProductService {
         for(Product product: ps){
             this.setFirstProductImage(product);
         }
+    }
+
+    /**
+     * 产品销量和累计评价数
+     */
+    public void setSaleCountAndReviewCount(List<Product> ps){
+        for(Product product: ps){
+            this.setSaleCountAndReviewCount(product);
+        }
+    }
+
+    /**
+     * 设置商品评价、销量信息
+     * @param product
+     */
+    public void setSaleCountAndReviewCount(Product product){
+        product.setReviewCount(reviewService.getCount(product));
+        product.setSaleCount(orderItemService.getSaleCount(product));
     }
 
 }
