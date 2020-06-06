@@ -1,0 +1,63 @@
+<div th:fragment="html" th:remove="tag">
+	<script>
+        $(function () {
+            var pid = getUrlParms("pid");
+            var data4Vue = {
+                uri: 'foreproduct',
+                beans: [],
+				category:{},
+                p:{}, //商品
+                firstProductImage:'',
+                pvs:[],     //商品属性值
+                reviews:[],  //商品评价
+                showDetail: true,
+                showReview: false
+            }
+
+            var vm = new Vue({
+                el:'#workingArea',
+                data: data4Vue,
+                mounted:function () {
+                    this.get_product();
+                },
+                methods:{
+                    get_product:function () {
+                        var url = this.uri + "/" + pid;
+                        axios.get(url).then(function (response) {
+                            var data = response.data.data;
+                            vm.p = data.product;
+                            vm.category = vm.p.category;
+                            vm.firstProductImage = vm.p.firstProductImage;
+                            vm.pvs = data.pvs;
+                            vm.reviews = data.reviews;
+                            vm.$nextTick(function () {
+                                imgAndInfoRegisterListeners(vm);
+                            });
+                        }).catch(function (error) {
+                            check_error_type(error);
+                        });
+                    }
+				}
+            });
+			//商品详情、累计评价切换
+            $("a.productDetailTopReviewLink").click(function(){
+                $("div.productReviewDiv").show();
+                $("div.productDetailDiv").hide();
+            });
+            $("a.productReviewTopPartSelectedLink").click(function(){
+                $("div.productReviewDiv").hide();
+                $("div.productDetailDiv").show();
+            });
+        });
+	</script>
+
+	<title>模仿天猫官网 {{p.name}}</title>
+	<div class="categoryPictureInProductPageDiv">
+		<img v-if="category!=null && category.id!=null" class="categoryPictureInProductPage" :src="'img/category/'+category.id+'.jpg'">
+	</div>
+	<div class="productPageDiv">
+		<div th:replace="include/fore/product/imgAndInfo::html"></div>
+		<div th:replace="include/fore/product/productReview::html"></div>
+		<div th:replace="include/fore/product/productDetail::html"></div>
+	</div>
+</div>
