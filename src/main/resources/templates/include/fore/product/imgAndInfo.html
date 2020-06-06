@@ -38,10 +38,11 @@
                 axios.get(url).then(function (response) {
                     if(response.data.code == 0){
                         /****************************************/
+                        var addCartpage = "foreaddCart";
                         var pid = vue.p.id;
                         var num= $(".productNumberSetting").val();
                         var param = {"pid":pid,"num":num};
-                        axios.post(url, param).then(function (response) {
+                        axios.post(addCartpage, param).then(function (response) {
                             if("success"==result){
                                 $(".addCartButton").html("已加入购物车");
                                 $(".addCartButton").attr("disabled","disabled");
