@@ -5,7 +5,8 @@
 <template th:fragment="html(page_title)">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<!-- 加载模板参数 -->
-	<title th:text="${page_title}"></title>
+	<title th:if="${page_title}" th:text="${page_title}"></title>
+	<!--<title th:if="${page_title} neq null" th:text="${page_title}"></title>-->
 
 	<script src="js/jquery/2.0.0/jquery.min.js"></script>
 	<link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
@@ -22,15 +23,6 @@
 	<!--自定义js-->
 	<script>
         $(function(){
-            $("a.productDetailTopReviewLink").click(function(){
-                $("div.productReviewDiv").show();
-                $("div.productDetailDiv").hide();
-            });
-            $("a.productReviewTopPartSelectedLink").click(function(){
-                $("div.productReviewDiv").hide();
-                $("div.productDetailDiv").show();
-            });
-
             $("span.leaveMessageTextareaSpan").hide();
             $("img.leaveMessageImg").click(function(){
 

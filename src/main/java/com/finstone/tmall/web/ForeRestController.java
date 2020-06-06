@@ -106,9 +106,12 @@ public class ForeRestController {
         //销量和累计评价
         productService.setSaleCountAndReviewCount(product);
 
+        //封面图片
+        productService.setFirstProductImage(product);
+
         Map<String, Object> map = new HashMap<>();
         map.put("product",product);
-        map.put("psv",pvs);
+        map.put("pvs",pvs);
         map.put("reviews",reviews);
         return ResponseEntity.success(map);
     }

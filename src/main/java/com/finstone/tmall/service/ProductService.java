@@ -118,7 +118,7 @@ public class ProductService {
     }
 
     //设置产品的封面图片，取id最大的type_single类图片
-    void setFirstProductImage(Product product){
+    public void setFirstProductImage(Product product){
         List<ProductImage> pis = productImageService.list(product.getId(), ProductImageService.SINGLE);
         if(null != pis && !pis.isEmpty()){
             ProductImage pi = pis.get(0);
@@ -126,7 +126,7 @@ public class ProductService {
         }
     }
 
-    void setFirstProductImage(List<Product> ps){
+    public void setFirstProductImage(List<Product> ps){
         for(Product product: ps){
             this.setFirstProductImage(product);
         }
