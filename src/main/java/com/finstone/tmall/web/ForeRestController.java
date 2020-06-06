@@ -83,6 +83,20 @@ public class ForeRestController {
     }
 
     /**
+     * 登录检查
+     * @return
+     */
+    @GetMapping("forecheckLogin")
+    public ResponseEntity forecheckLogin(HttpSession session){
+        User user = (User) session.getAttribute("user");
+        if(user == null){
+            return ResponseEntity.fail("请先登录");
+        }else{
+            return ResponseEntity.success();
+        }
+    }
+
+    /**
      * 商品详情及评价信息
      * @param pid
      * @return

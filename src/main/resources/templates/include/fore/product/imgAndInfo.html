@@ -31,74 +31,77 @@
             });
 
             $(".addCartButton").removeAttr("disabled");
+
+            //加入购物车
             $(".addCartLink").click(function(){
-                var page = "forecheckLogin";
-                $.get(
-                    page,
-                    function(result){
-                        if("success"==result){
-                            var pid = vue.p.id;
-                            var num= $(".productNumberSetting").val();
-                            var addCartpage = "foreaddCart";
-                            $.get(
-                                addCartpage,
-                                {"pid":pid,"num":num},
-                                function(result){
-                                    if("success"==result){
-                                        $(".addCartButton").html("已加入购物车");
-                                        $(".addCartButton").attr("disabled","disabled");
-                                        $(".addCartButton").css("background-color","lightgray")
-                                        $(".addCartButton").css("border-color","lightgray")
-                                        $(".addCartButton").css("color","black")
-                                    }else{
-                                    }
-                                }
-                            );
-                        }
-                        else{
-                            $("#loginModal").modal('show');
-                        }
+                var url = "forecheckLogin";
+                axios.get(url).then(function (response) {
+                    if(response.data.code == 0){
+                        /****************************************/
+                        var pid = vue.p.id;
+                        var num= $(".productNumberSetting").val();
+                        var param = {"pid":pid,"num":num};
+                        axios.post(url, param).then(function (response) {
+                            if("success"==result){
+                                $(".addCartButton").html("已加入购物车");
+                                $(".addCartButton").attr("disabled","disabled");
+                                $(".addCartButton").css("background-color","lightgray")
+                                $(".addCartButton").css("border-color","lightgray")
+                                $(".addCartButton").css("color","black")
+                            }else{
+                            }
+                        }).catch(function (error) {
+                            check_error_type(error);
+                        });
+                        /****************************************/
+                    }else{
+                        $("#loginModal").modal('show');
                     }
-                );
-                return false;
-            });
-            $(".buyLink").click(function(){
-                var page = "forecheckLogin";
-                $.get(
-                    page,
-                    function(result){
-                        if("success"==result){
-                            var num = $(".productNumberSetting").val();
-                            location.href= $(".buyLink").attr("href")+"&num="+num;
-                        }else{
-                            $("#loginModal").modal('show');
-                        }
-                    }
-                );
+                }).catch(function (error) {
+                    check_error_type(error);
+                });
                 return false;
             });
 
+            //购买
+            $(".buyLink").click(function(){
+                var url = "forecheckLogin";
+                axios.get(url).then(function (response) {
+                    if(response.data.code == 0){
+                        var num = $(".productNumberSetting").val();
+                        location.href= $(".buyLink").attr("href")+"&num="+num;
+                    }else{
+                        $("#loginModal").modal('show');
+                    }
+                }).catch(function (error) {
+                    check_error_type(error);
+                });
+                return false;
+            });
+
+            //模态框登录
             $("button.loginSubmitButton").click(function(){
-                var name = $("#name").val();
-                var password = $("#password").val();
-                if(0==name.length||0==password.length){
-                    $("span.errorMessage").html("请输入账号密码");
-                    $("div.loginErrorMessageDiv").show();
+                if(0==vue.user.name.length){
+                    $("span.errorMessage").html("请输入用户名");
+                    $("div.loginErrorMessageDiv").css("visibility","visible");
                     return false;
                 }
-                var page = "foreloginAjax";
-                $.get(
-                    page,
-                    {"name":name,"password":password},
-                    function(result){
-                        if("success"==result){
-                            location.reload();
-                        }else{
-                            $("span.errorMessage").html("账号密码错误");
-                            $("div.loginErrorMessageDiv").show();
-                        }
+                if(0==vue.user.password.length){
+                    $("span.errorMessage").html("请输入密码");
+                    $("div.loginErrorMessageDiv").css("visibility","visible");
+                    return false;
+                }
+                var url = "forelogin";
+                axios.post(url,vue.user).then(function (response) {
+                    if(response.data.code == 0){
+                        location.reload();
+                    }else{
+                        $("span.errorMessage").html("账号密码错误");
+                        $("div.loginErrorMessageDiv").css("visibility","visible");
                     }
-                );
+                }).catch(function (error) {
+                    check_error_type(error);
+                });
                 return true;
             });
 
