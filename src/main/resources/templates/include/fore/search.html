@@ -4,9 +4,9 @@
 		<img id="logo" src="img/site/logo.gif" class="logo">
 	</a>
 
-	<form action="foresearch" method="post" >
+	<form action="foresearch" method="get">
 		<div class="searchDiv">
-			<input name="keyword" type="text" placeholder="时尚男鞋  太阳镜 ">
+			<input name="keyword" type="text" placeholder="时尚男鞋 太阳镜">
 			<button type="submit" class="searchButton">搜索</button>
 			<div class="searchBelow">
 				<span v-for="(c,index) in cs" v-if="(index+1)>=5 && (index+1)<=8 ">

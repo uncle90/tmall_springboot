@@ -14,4 +14,6 @@ public interface ProductDao extends JpaRepository<Product,Integer> {
 
     List<Product> findByCategory(Category category);
 
+    List<Product> findByNameLike(String name, Pageable pageable);
+
 }

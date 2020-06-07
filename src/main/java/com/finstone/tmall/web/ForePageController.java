@@ -1,6 +1,7 @@
 package com.finstone.tmall.web;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -33,7 +34,7 @@ public class ForePageController {
     /**
      * 前往登录页
      */
-    @RequestMapping("loginPage")
+    @GetMapping("loginPage")
     public String loginPage(){
         return "fore/login";
     }
@@ -41,7 +42,7 @@ public class ForePageController {
     /**
      * 前往注册页
      */
-    @RequestMapping("registerPage")
+    @GetMapping("registerPage")
     public String registerPage(){
         return "fore/register";
     }
@@ -49,7 +50,7 @@ public class ForePageController {
     /**
      * 前往注册成功页
      */
-    @RequestMapping("registerSuccess")
+    @GetMapping("registerSuccess")
     public String registerSuccess(){
         return "fore/registerSuccess";
     }
@@ -57,7 +58,7 @@ public class ForePageController {
     /**
      * 退出
      */
-    @RequestMapping("forelogout")
+    @GetMapping("forelogout")
     public String forelogout(HttpSession session){
         session.removeAttribute("user");
         return "redirect:home";
@@ -67,7 +68,7 @@ public class ForePageController {
      * 商品详情页
      * @return
      */
-    @RequestMapping("foreproduct")
+    @GetMapping("foreproduct")
     public String foreproduct(){
         return "fore/product";
     }
@@ -76,9 +77,17 @@ public class ForePageController {
      * 商品分类页
      * @return
      */
-    @RequestMapping("forecategory")
+    @GetMapping("forecategory")
     public String forecategory(){
         return "fore/category";
+    }
+
+    /**
+     * 商品搜索
+     */
+    @GetMapping("foresearch")
+    public String foresearch(){
+        return "fore/searchResult";
     }
 
 }

@@ -135,7 +135,7 @@ function getUrlParms(para){
     if(arrVal.length==1){
         return arrVal[0];
     }else if(arrVal.length==0){
-        return null;
+        return '';
     }else{
         return arrVal;
     }

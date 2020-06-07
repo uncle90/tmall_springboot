@@ -201,4 +201,25 @@ public class ForeRestController {
         return ResponseEntity.success(map);
     }
 
+    /**
+     * 商品搜索
+     * @param keyword
+     * @return
+     */
+    @PostMapping("foresearch")
+    public ResponseEntity search(String keyword){
+        if(keyword==null){
+            keyword = "";
+        }
+        List<Product> ps= productService.search(keyword, 0, 8);
+        //销量和累计评价
+        productService.setSaleCountAndReviewCount(ps);
+        //封面图片
+        productService.setFirstProductImage(ps);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("ps",ps);
+        return ResponseEntity.success(map);
+    }
+
 }

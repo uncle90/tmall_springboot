@@ -150,4 +150,17 @@ public class ProductService {
         product.setSaleCount(orderItemService.getSaleCount(product));
     }
 
+    /**
+     * 商品搜索
+     * @param keyword
+     * @return
+     */
+    public List<Product> search(String keyword, Integer start, Integer size){
+        Sort sort = new Sort(Sort.Direction.DESC, "id");
+        Pageable pageable = new PageRequest(start, size, sort);
+
+        List<Product> ps = productDao.findByNameLike("%"+keyword+"%", pageable);
+        return ps;
+    }
+
 }
