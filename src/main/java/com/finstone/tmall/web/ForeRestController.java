@@ -102,7 +102,7 @@ public class ForeRestController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("foreproduct/{pid}")
+    @GetMapping("foreproduct/{pid}")
     public ResponseEntity product(@PathVariable("pid") int pid) throws Exception{
         //产品&图片信息
         Product product = productService.get(pid);
