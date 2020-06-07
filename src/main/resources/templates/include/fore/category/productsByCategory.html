@@ -1,6 +1,6 @@
 <div th:fragment="html">
     <div class="categoryProducts">
-        <template v-for="(p,index) in ps" v-if="index <= 100">
+        <template v-for="(p,index) in ps" v-if="(index+1) <= 100">
             <div class="productUnit" :price="p.promotePrice">
                 <div class="productUnitFrame">
                     <a :href="'foreproduct?pid='+p.id">

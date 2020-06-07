@@ -1,7 +1,7 @@
 <template th:fragment="html" th:remove="tag">
 
 	<div class="homepageCategoryProducts">
-		<div class="eachHomepageCategoryProducts" v-for="(c,index) in cs" v-if="index < 100">
+		<div class="eachHomepageCategoryProducts" v-for="(c,index) in cs" v-if="(index+1) <= 100">
 			<div class="left-mark"></div>
 			<span class="categoryTitle">{{c.name}}</span>
 			<br>
