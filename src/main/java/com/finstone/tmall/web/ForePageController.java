@@ -72,4 +72,13 @@ public class ForePageController {
         return "fore/product";
     }
 
+    /**
+     * 商品分类页
+     * @return
+     */
+    @RequestMapping("forecategory")
+    public String forecategory(){
+        return "fore/category";
+    }
+
 }

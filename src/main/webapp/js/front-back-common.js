@@ -162,3 +162,18 @@ function formatMoney(num){
             num.substring(num.length-(4*i+3));
     return (((sign)?'':'-') + num + '.' + cents);
 }
+
+/**
+ * 是否为非空数字
+ * @param val
+ */
+function isNumber(val){
+    if(val == "" || val == null || val == undefined){
+        return false;
+    }
+    if(!isNaN(val)){
+        return true;
+    }else{
+        return false;
+    }
+}

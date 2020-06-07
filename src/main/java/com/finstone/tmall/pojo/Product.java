@@ -1,6 +1,7 @@
 package com.finstone.tmall.pojo;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -44,7 +45,14 @@ public class Product {
     @JoinColumn(name="cid")
     private Category category;
 
+    /**
+     * 创建时间
+     * @JsonFormat     后台时间 ==> 前后时间
+     * @DateTimeFormat 前台时间 ==> 后台时间
+     */
     @Column(name="createDate")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createDate;
 
     /*非数据库字段：在首页、产品列表页等显示封面图片*/

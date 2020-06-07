@@ -1,0 +1,73 @@
+<template th:fragment="html" th:remove="tag">
+    <script>
+        function sortBarListeners(vue) {
+            $("input.sortBarPrice").keyup(function () {
+                //清除特殊字符
+                $(this).val(this.value.replace(/\D/g, '').replace(/....(?!$)/g, '$&'));
+
+                var begin = $("input.beginPrice").val();
+                var end = $("input.endPrice").val();
+
+                if (isNumber(begin) && isNumber(end)) {
+                    $("div.productUnit").hide();
+                    $("div.productUnit").each(function () {
+                        var price = $(this).attr("price");
+                        price = new Number(price);
+                        if (price >= begin && price <= end) {
+                            $(this).show();
+                        }
+                    });
+                } else if (isNumber(begin) && !isNumber(end)) {
+                    $("div.productUnit").hide();
+                    $("div.productUnit").each(function () {
+                        var price = $(this).attr("price");
+                        price = new Number(price);
+                        if (price >= begin) {
+                            $(this).show();
+                        }
+                    });
+                } else if (isNumber(end) && !isNumber(begin)) {
+                    $("div.productUnit").hide();
+                    $("div.productUnit").each(function () {
+                        var price = $(this).attr("price");
+                        price = new Number(price);
+                        if (price <= end) {
+                            $(this).show();
+                        }
+                    });
+                } else {
+                    $("div.productUnit").show;
+                }
+            });
+        }
+    </script>
+    <div class="categorySortBar">
+        <table class="categorySortBarTable categorySortTable">
+            <tr>
+                <td :class="{'grayColumn': sort=='all' || sort==''}">
+                    <a :href="'?cid='+c.id+'&sort=all'">综合<span class="glyphicon glyphicon-arrow-down"></span></a>
+                </td>
+                <td :class="{'grayColumn': sort=='review'}">
+                    <a :href="'?cid='+c.id+'&sort=review'">人气<span class="glyphicon glyphicon-arrow-down"></span></a>
+                </td>
+                <td :class="{'grayColumn': sort=='date'}">
+                    <a :href="'?cid='+c.id+'&sort=date'">新品<span class="glyphicon glyphicon-arrow-down"></span></a>
+                </td>
+                <td :class="{'grayColumn': sort=='saleCount'}">
+                    <a :href="'?cid='+c.id+'&sort=saleCount'">销量<span class="glyphicon glyphicon-arrow-down"></span></a>
+                </td>
+                <td :class="{'grayColumn': sort=='price'}">
+                    <a :href="'?cid='+c.id+'&sort=price'">价格<span class="glyphicon glyphicon-resize-vertical"></span></a>
+                </td>
+            </tr>
+        </table>
+
+        <table class="categorySortBarTable">
+            <tr>
+                <td><input class="sortBarPrice beginPrice" type="number" placeholder="请输入"></td>
+                <td class="grayColumn priceMiddleColumn">-</td>
+                <td><input class="sortBarPrice endPrice" type="number" placeholder="请输入"></td>
+            </tr>
+        </table>
+    </div>
+</template>

@@ -2,13 +2,12 @@ package com.finstone.tmall.web;
 
 import com.finstone.tmall.pojo.*;
 import com.finstone.tmall.service.*;
+import com.finstone.tmall.util.ProductComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 前台页面（买家视角）涉及到的 restful 风格接口 api
@@ -127,6 +126,78 @@ public class ForeRestController {
         map.put("product",product);
         map.put("pvs",pvs);
         map.put("reviews",reviews);
+        return ResponseEntity.success(map);
+    }
+
+    /**
+     * 前台分类页
+     * @param cid
+     * @param sort 排序方式(可选)
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("forecategory/{cid}")
+    public ResponseEntity category(@PathVariable("cid") Integer cid, String sort) throws Exception{
+
+        Category category = categoryService.get(cid); //当前分类
+        productService.fillProducts(category);        //填充分类下的产品
+        productService.setSaleCountAndReviewCount(category.getProducts()); //产品销量&评价数量
+        //去除Category.product中的Category属性，避免在JSON序列化时无限递归
+        //@JsonBackReference太彻底，导致部分场景无法使用，改用需要时手动切断递归
+        categoryService.removeCategoryFromProduct(category);
+        //产品排序:
+        if(sort!=null){
+            //方法一：实现Comparator接口
+            Collections.sort(category.getProducts(), new ProductComparator(sort));
+
+            /*
+            //方法二：在内部类中定义比较器
+            switch (sort){
+                case "all": //热门（销量*评论数）
+                    Collections.sort(category.getProducts(), new Comparator<Product>() {
+                        @Override
+                        public int compare(Product o1, Product o2) {
+                            return o1.getSaleCount()*o1.getReviewCount() - o2.getSaleCount()*o2.getReviewCount();
+                        }
+                    });
+                    break;
+                case "review": //评价数多
+                    Collections.sort(category.getProducts(), new Comparator<Product>() {
+                        @Override
+                        public int compare(Product o1, Product o2) {
+                            return o1.getReviewCount() - o2.getReviewCount();
+                        }
+                    });
+                    break;
+                case "date": //发布日期近
+                    Collections.sort(category.getProducts(), new Comparator<Product>() {
+                        @Override
+                        public int compare(Product o1, Product o2) {
+                            return o1.getCreateDate().compareTo(o2.getCreateDate());
+                        }
+                    });
+                    break;
+                case "saleCount": //销量多
+                    Collections.sort(category.getProducts(), new Comparator<Product>() {
+                        @Override
+                        public int compare(Product o1, Product o2) {
+                            return -(o1.getSaleCount() - o2.getSaleCount());
+                        }
+                    });
+                    break;
+                case "price": //价格低
+                    Collections.sort(category.getProducts(), new Comparator<Product>() {
+                        @Override
+                        public int compare(Product o1, Product o2) {
+                            return o1.getPromotePrice().compareTo(o2.getPromotePrice());
+                        }
+                    });
+                    break;
+            }*/
+        }
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("category",category);
         return ResponseEntity.success(map);
     }
 
