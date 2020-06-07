@@ -63,6 +63,10 @@ public class ForePageController {
         return "redirect:home";
     }
 
+    /**
+     * 商品详情页
+     * @return
+     */
     @RequestMapping("foreproduct")
     public String foreproduct(){
         return "fore/product";
