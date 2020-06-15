@@ -90,4 +90,11 @@ public class ForePageController {
         return "fore/searchResult";
     }
 
+    /**
+     * 立即购买
+     */
+    @GetMapping("forebuyone")
+    public String forebuyone(){
+        return "fore/buy";
+    }
 }
