@@ -9,8 +9,9 @@
 <script>
     $(function(){
         var data4Vue = {
-            uri: 'categories',
-			redirect_uri: 'admin/category',
+            ctx: ctx, //header中上下文
+            uri: ctx + 'categories',
+			redirect_uri: ctx + 'admin/category',
             bean: { id: 0, name: ''},
             file: null
         };
