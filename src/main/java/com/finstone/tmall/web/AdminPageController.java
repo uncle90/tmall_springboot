@@ -23,12 +23,12 @@ public class AdminPageController {
     }
 
     //属性管理
-    @GetMapping(value="/admin_property_list")
+    @GetMapping(value="/admin/property")
     public String listProperty(){
         return "admin/listProperty";
     }
 
-    @GetMapping(value="/admin_property_edit")
+    @GetMapping(value="/admin/property/edit")
     public String editProperty(){
         return "admin/editProperty";
     }

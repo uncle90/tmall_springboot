@@ -9,9 +9,10 @@
 <script>
     $(function(){
         var data4Vue = {
+            ctx: ctx, //header中上下文
             category: {},//所属分类
-            uri: 'properties',
-            redirect_uri: 'admin_property_list',
+            uri: ctx + 'properties',
+            redirect_uri: ctx + 'admin/property',
             bean: { id: 0, name: '', category:{id:0}}
         };
 
@@ -50,7 +51,7 @@
 <div class="workingArea" id="workingArea">
 	<ol class="breadcrumb">
 		<li><a href="admin/category">所有分类</a></li>
-		<li><a :href="'admin_property_list?cid='+category.id">{{category.name}}</a></li>
+		<li><a :href="ctx+'admin/property?cid='+category.id">{{category.name}}</a></li>
 		<li class="active">编辑属性</li>
 	</ol>
 

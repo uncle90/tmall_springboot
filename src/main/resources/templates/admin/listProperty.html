@@ -10,8 +10,11 @@
     $(function(){
         var cid = getUrlParms("cid");
         var data4Vue = {
+            ctx: ctx, //header中上下文
             category: '',//所属分类
-            uri:'properties',
+			uri_parent: ctx + "categories/" + cid,
+			uri_list  : ctx + "categories/" + cid + "/properties",
+            uri       : ctx + 'properties',
             pagination:{},//分页bean
             beans:[],     //分页数据列表
             bean: { id: 0, name: '', category:{id:0}}//临时容器
@@ -26,14 +29,14 @@
             },
             methods:{
                 getCategory:function(){
-                    var url = "categories/" + cid;
+                    var url = this.uri_parent;
                     axios.get(url).then(function(response){
                         vm.bean.category = response.data;
                         vm.category = response.data;
                     });
                 },
                 list:function(start){
-                    var url = "categories/" + cid + "/" + this.uri + "?start=" + start;
+                    var url = this.uri_list + "?start=" + start;
                     axios.get(url).then(function(response){
                         vm.pagination = response.data;
                         vm.beans = response.data.content;
@@ -75,8 +78,8 @@
 
 <div class="workingArea" id="workingArea">
 	<ol class="breadcrumb">
-		<li><a href="admin/category">所有分类</a></li>
-		<li><a :href="'admin_property_list?cid='+category.id">{{category.name}}</a></li>
+		<li><a th:href="@{/admin/category}">所有分类</a></li>
+		<li><a :href="ctx+'admin/property?cid='+category.id">{{category.name}}</a></li>
 		<li class="active">属性管理</li>
 	</ol>
 
@@ -94,7 +97,7 @@
 			<tr v-for="p in beans">
 				<td>{{p.id}}</td>
 				<td>{{p.name}}</td>
-				<td><a :href="'admin_property_edit?id='+p.id"><span
+				<td><a :href="ctx+'admin/property/edit?id='+p.id"><span
 						class="glyphicon glyphicon-edit"></span></a></td>
 				<td><a deleteLink="true" href="javascript:void(0)" @click="deleteOne(p.id)"><span
 						class="glyphicon glyphicon-trash"></span></a></td>
