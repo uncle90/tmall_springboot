@@ -34,12 +34,12 @@ public class AdminPageController {
     }
 
     //产品管理
-    @GetMapping(value ="/admin_product_list")
+    @GetMapping(value ="/admin/product")
     public String listProduct(){
         return "admin/listProduct";
     }
 
-    @GetMapping(value ="/admin_product_edit")
+    @GetMapping(value ="/admin/product/edit")
     public String editProduct(){
         return "admin/editProduct";
     }

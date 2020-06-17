@@ -13,9 +13,12 @@
     $(function(){
         var pid = getUrlParms("pid");
         var data4Vue = {
+            ctx: ctx, //header中上下文
             category: {},//所属分类
             product:{},//所属产品
-            uri:'propertyvalues',
+            uri_parent: ctx + "products/" + pid,
+            uri_list  : ctx + "products/" + pid + "/propertyvalues",
+            uri       : ctx + 'propertyvalues',
             beans:[]
         };
 
@@ -29,14 +32,14 @@
             methods:{
                 //查询
                 getProduct:function(){
-                    var url = "products" + "/" + pid;
+                    var url = this.uri_parent;
                     axios.get(url).then(function(response){
                         vm.product = response.data;
                         vm.category = response.data.category;
                     });
                 },
                 list:function(){
-                    var url = "products/" + pid + "/" + this.uri;
+                    var url = this.uri_list;
                     axios.get(url).then(function(value){
                         vm.beans = value.data;
                     }).catch(function (reason){
@@ -64,8 +67,8 @@
 
 <div class="workingArea" id="workingArea">
     <ol class="breadcrumb">
-        <li><a href="admin/category">所有分类</a></li>
-        <li><a :href="'admin_product_list?cid='+category.id">{{category.name}}</a></li>
+        <li><a th:href="@{/admin/category}">所有分类</a></li>
+        <li><a :href="ctx+'admin/product?cid='+category.id">{{category.name}}</a></li>
         <li class="active">{{product.name}}</li>
         <li class="active">编辑产品属性</li>
     </ol>

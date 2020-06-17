@@ -11,8 +11,8 @@
         var data4Vue = {
             ctx: ctx, //header中上下文
             category: {},//所属分类
-            uri: 'products',
-            redirect_uri: 'admin_product_list',
+            uri: ctx + 'products',
+            redirect_uri: ctx + 'admin/product',
             bean: {id:0, name:'', category:{id:0}}
         };
 
@@ -56,7 +56,7 @@
 
 <div class="workingArea" id="workingArea">
 	<ol class="breadcrumb">
-		<li><a href="admin/category">所有分类</a></li>
+		<li><a th:href="@{/admin/category}">所有分类</a></li>
 		<li><a :href="ctx+'admin/property?cid='+category.id">{{category.name}}</a></li>
 		<li class="active">编辑产品</li>
 	</ol>
