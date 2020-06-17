@@ -57,13 +57,13 @@ public class AdminPageController {
     }
 
     //用户管理
-    @GetMapping(value = "admin/user/list")
+    @GetMapping(value = "admin/user")
     public String listUser(){
         return "admin/listUser";
     }
 
     //订单管理
-    @GetMapping(value = "admin_order_list")
+    @GetMapping(value = "admin/orders")
     public String listOrder(){
         return "admin/listOrder";
     }
