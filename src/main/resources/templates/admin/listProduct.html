@@ -117,7 +117,7 @@
 				<td>{{p.originalPrice}}</td>
 				<td>{{p.promotePrice}}</td>
 				<td>{{p.stock}}</td>
-				<td><a :href="'admin_productImage_list?pid='+p.id"><span class="glyphicon glyphicon-picture"></span></a></td>
+				<td><a :href="ctx+'admin/productImage/list?pid='+p.id"><span class="glyphicon glyphicon-picture"></span></a></td>
 				<td><a :href="'admin_propertyValue_edit?pid='+p.id"><span class="glyphicon glyphicon-th-list"></span></a></td>
 				<td><a :href="ctx+'admin/product/edit?id='+p.id"><span class="glyphicon glyphicon-edit"></span></a></td>
 				<td><a deleteLink="true" href="javascript:void(0)" @click="deleteOne(p.id)"><span class="glyphicon glyphicon-trash"></span></a></td>

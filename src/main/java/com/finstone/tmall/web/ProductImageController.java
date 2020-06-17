@@ -31,7 +31,7 @@ public class ProductImageController {
      * @param type
      * @return
      */
-    @GetMapping("categories/{pid}/productimages")
+    @GetMapping("products/{pid}/productimages")
     public List<ProductImage> list(@PathVariable(name="pid") int pid, @RequestParam(name="type") String type){
         if(ProductImageService.SINGLE.equals(type)){
             //单个（类）图片

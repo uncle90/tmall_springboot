@@ -45,7 +45,7 @@ public class AdminPageController {
     }
 
     //产品图片管理
-    @GetMapping(value = "/admin_productImage_list")
+    @GetMapping(value = "/admin/productImage/list")
     public String listProductImage(){
         return "admin/listProductImage";
     }

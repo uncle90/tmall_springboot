@@ -10,9 +10,12 @@
     $(function(){
         var pid = getUrlParms("pid");
         var data4Vue = {
+            ctx: ctx, //header中上下文
             category: {},//所属分类
 			product:{},//所属产品
-            uri:'productimages',
+            uri_parent: ctx + "products/" + pid,
+            uri_list  : ctx + "products/" + pid + "/productimages",
+            uri       : ctx + 'productimages',
 			beansSingle:[],
             beansDetail:[],
             bean:{id:0,type:'',product:{id:0,name:''}},
@@ -30,7 +33,7 @@
             methods:{
                 //查询
                 getProduct:function(){
-                    var url = "products" + "/" + pid;
+                    var url = this.uri_parent;
                     axios.get(url).then(function(response){
                         vm.product = response.data;
                         vm.category = response.data.category;
@@ -39,7 +42,7 @@
                     });
                 },
                 listSingle:function(){
-                    var url = "categories/" + pid + "/" + this.uri + "?type=single";
+                    var url = this.uri_list + "?type=single";
                     axios.get(url).then(function(response){
                         vm.beansSingle = response.data;
                     }).catch(function(error){
@@ -47,7 +50,7 @@
                     });
                 },
                 listDetail:function(){
-                    var url = "categories/" + pid + "/" + this.uri + "?type=detail";
+                    var url = this.uri_list + "?type=detail";
                     axios.get(url).then(function(response){
                         vm.beansDetail = response.data;
                     }).catch(function(error){
@@ -149,8 +152,8 @@
 							<tr v-for="pi in beansSingle">
 								<td>{{pi.id}}</td>
 								<td>
-									<a title="点击查看原图" :href="'img/productSingle/'+pi.id+'.jpg'">
-										<img height="50px" :src="'img/productSingle/'+pi.id+'.jpg'">
+									<a title="点击查看原图" :href="ctx+'img/productSingle/'+pi.id+'.jpg'">
+										<img height="50px" :src="ctx+'img/productSingle/'+pi.id+'.jpg'">
 									</a>
 								</td>
 								<td><a deleteLink="true" href="javascript:void(0);" @click="deleteOne(pi.id,'single')"><span class="glyphicon glyphicon-trash"></span></a></td>
@@ -195,8 +198,8 @@
 							<tr v-for="pi in beansDetail">
 								<td>{{pi.id}}</td>
 								<td>
-									<a title="点击查看原图" :href="'img/productDetail/'+pi.id+'.jpg'">
-										<img height="50px" :src="'img/productDetail/'+pi.id+'.jpg'">
+									<a title="点击查看原图" :href="ctx+'img/productDetail/'+pi.id+'.jpg'">
+										<img height="50px" :src="ctx+'img/productDetail/'+pi.id+'.jpg'">
 									</a>
 								</td>
 								<td>
