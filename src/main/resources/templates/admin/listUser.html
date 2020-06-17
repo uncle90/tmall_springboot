@@ -9,7 +9,8 @@
 <script>
     $(function () {
         var data4Vue = {
-            uri: 'users',
+            ctx: ctx, //header中上下文
+            uri: ctx + 'users',
             pagination: {},
             beans: [],
             bean: {id: 0, name:''}

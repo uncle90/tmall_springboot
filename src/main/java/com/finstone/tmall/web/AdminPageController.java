@@ -57,7 +57,7 @@ public class AdminPageController {
     }
 
     //用户管理
-    @GetMapping(value = "admin_user_list")
+    @GetMapping(value = "admin/user/list")
     public String listUser(){
         return "admin/listUser";
     }
