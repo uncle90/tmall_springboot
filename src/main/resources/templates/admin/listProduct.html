@@ -82,8 +82,8 @@
 
 <div class="workingArea" id="workingArea">
 	<ol class="breadcrumb">
-		<li><a th:href="@{/admin/category}">所有分类</a></li>
-		<li><a :href="ctx+'admin/product?cid='+category.id">{{category.name}}</a></li>
+		<li><a th:href="@{/admin/categories}">所有分类</a></li>
+		<li><a :href="ctx+'admin/products?cid='+category.id">{{category.name}}</a></li>
 		<li class="active">产品管理</li>
 	</ol>
 
@@ -117,9 +117,9 @@
 				<td>{{p.originalPrice}}</td>
 				<td>{{p.promotePrice}}</td>
 				<td>{{p.stock}}</td>
-				<td><a :href="ctx+'admin/productImage/list?pid='+p.id"><span class="glyphicon glyphicon-picture"></span></a></td>
-				<td><a :href="ctx+'admin/propertyValue/edit?pid='+p.id"><span class="glyphicon glyphicon-th-list"></span></a></td>
-				<td><a :href="ctx+'admin/product/edit?id='+p.id"><span class="glyphicon glyphicon-edit"></span></a></td>
+				<td><a :href="ctx+'admin/productImages?pid='+p.id"><span class="glyphicon glyphicon-picture"></span></a></td>
+				<td><a :href="ctx+'admin/propertyValues/edit?pid='+p.id"><span class="glyphicon glyphicon-th-list"></span></a></td>
+				<td><a :href="ctx+'admin/products/edit?id='+p.id"><span class="glyphicon glyphicon-edit"></span></a></td>
 				<td><a deleteLink="true" href="javascript:void(0)" @click="deleteOne(p.id)"><span class="glyphicon glyphicon-trash"></span></a></td>
 			</tr>
 			</tbody>

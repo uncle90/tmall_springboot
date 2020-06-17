@@ -67,8 +67,8 @@
 
 <div class="workingArea" id="workingArea">
     <ol class="breadcrumb">
-        <li><a th:href="@{/admin/category}">所有分类</a></li>
-        <li><a :href="ctx+'admin/product?cid='+category.id">{{category.name}}</a></li>
+        <li><a th:href="@{/admin/categories}">所有分类</a></li>
+        <li><a :href="ctx+'admin/products?cid='+category.id">{{category.name}}</a></li>
         <li class="active">{{product.name}}</li>
         <li class="active">编辑产品属性</li>
     </ol>

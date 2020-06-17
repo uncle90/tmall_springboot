@@ -131,9 +131,9 @@
                         <!--<td><img height="40px" :src="'../img/category/'+c.id+'.jpg'"></td>-->
                         <td><img height="40px" :src="ctx+'img/category/'+c.id+'.jpg'"></td>
                         <td>{{c.name}}</td>
-                        <td><a :href="ctx+'admin/property?cid='+c.id"><span class="glyphicon glyphicon-th-list"></span></a></td>
-                        <td><a :href="ctx+'admin/product?cid='+c.id"><span class="glyphicon glyphicon-shopping-cart"></span></a></td>
-                        <td><a :href="ctx+'admin/category/edit?id='+c.id"><span class="glyphicon glyphicon-edit"></span></a></td>
+                        <td><a :href="ctx+'admin/properties?cid='+c.id"><span class="glyphicon glyphicon-th-list"></span></a></td>
+                        <td><a :href="ctx+'admin/products?cid='+c.id"><span class="glyphicon glyphicon-shopping-cart"></span></a></td>
+                        <td><a :href="ctx+'admin/categories/edit?id='+c.id"><span class="glyphicon glyphicon-edit"></span></a></td>
                         <td><a href="javascript:void(0)" @click="deleteOne(c.id)"><span class="glyphicon glyphicon-trash"></span></a></td>
                     </tr>
                 <!--</template>-->

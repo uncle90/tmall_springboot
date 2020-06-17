@@ -78,8 +78,8 @@
 
 <div class="workingArea" id="workingArea">
 	<ol class="breadcrumb">
-		<li><a th:href="@{/admin/category}">所有分类</a></li>
-		<li><a :href="ctx+'admin/property?cid='+category.id">{{category.name}}</a></li>
+		<li><a th:href="@{/admin/categories}">所有分类</a></li>
+		<li><a :href="ctx+'admin/properties?cid='+category.id">{{category.name}}</a></li>
 		<li class="active">属性管理</li>
 	</ol>
 
@@ -97,7 +97,7 @@
 			<tr v-for="p in beans">
 				<td>{{p.id}}</td>
 				<td>{{p.name}}</td>
-				<td><a :href="ctx+'admin/property/edit?id='+p.id"><span
+				<td><a :href="ctx+'admin/properties/edit?id='+p.id"><span
 						class="glyphicon glyphicon-edit"></span></a></td>
 				<td><a deleteLink="true" href="javascript:void(0)" @click="deleteOne(p.id)"><span
 						class="glyphicon glyphicon-trash"></span></a></td>

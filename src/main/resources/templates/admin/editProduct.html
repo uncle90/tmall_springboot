@@ -12,7 +12,7 @@
             ctx: ctx, //header中上下文
             category: {},//所属分类
             uri: ctx + 'products',
-            redirect_uri: ctx + 'admin/product',
+            redirect_uri: ctx + 'admin/products',
             bean: {id:0, name:'', category:{id:0}}
         };
 
@@ -56,8 +56,8 @@
 
 <div class="workingArea" id="workingArea">
 	<ol class="breadcrumb">
-		<li><a th:href="@{/admin/category}">所有分类</a></li>
-		<li><a :href="ctx+'admin/property?cid='+category.id">{{category.name}}</a></li>
+		<li><a th:href="@{/admin/categories}">所有分类</a></li>
+		<li><a :href="ctx+'admin/properties?cid='+category.id">{{category.name}}</a></li>
 		<li class="active">编辑产品</li>
 	</ol>
 
