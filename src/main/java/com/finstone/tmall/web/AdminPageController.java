@@ -51,10 +51,7 @@ public class AdminPageController {
     }
 
     //产品属性值管理
-    /*
-    admin_propertyValue_edit
-     */
-    @GetMapping(value = "admin_propertyValue_edit")
+    @GetMapping(value = "admin/propertyValue/edit")
     public String listPropertyValue(){
         return "admin/editPropertyValue";
     }
