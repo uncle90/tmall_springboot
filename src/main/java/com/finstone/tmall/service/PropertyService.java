@@ -57,7 +57,7 @@ public class PropertyService {
      */
     public void delete(Integer id){
         //删除所有属性值（外键）
-        Property property = propertyDao.getOne(id);
+        Property property = propertyDao.findOne(id);
         propertyValueService.delete(property);
         //删除属性
         propertyDao.delete(id);
