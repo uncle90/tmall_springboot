@@ -67,10 +67,22 @@
             //购买
             $(".buyLink").click(function(){
                 var url = "forecheckLogin";
-                axios.get(url).then(function (response) {
+                axios.get(url).then(function (response) {//检查登录
                     if(response.data.code == 0){
-                        var num = $(".productNumberSetting").val();
-                        location.href= $(".buyLink").attr("href")+"&num="+num;
+                        var pid = vue.p.id;
+                        var num= $(".productNumberSetting").val();
+                        var param = {"pid":pid,"num":num};
+                        var url = "forebuyone";
+                        axios.post(url,param).then(function(response){//添加订单项
+                            if(response.data.code == 0){
+                                var oiid = response.data.data.oiid;
+                                location.href= "foreshooping?oiid="+oiid;//前往结算页
+                            }else{
+                                alert(response.data.msg);
+                            }
+                        }).catch(function (error) {
+                            check_error_type(error);
+                        });
                     }else{
                         $("#loginModal").modal('show');
                     }
@@ -208,7 +220,7 @@
             </div>
 
             <div class="buyDiv">
-                <a class="buyLink" :href="'forebuyone?pid='+p.id"><button class="buyButton">立即购买</button></a>
+                <a class="buyLink"><button class="buyButton">立即购买</button></a>
                 <a href="#nowhere" class="addCartLink"><button class="addCartButton"><span class="glyphicon glyphicon-shopping-cart"></span>加入购物车</button></a>
             </div>
         </div>

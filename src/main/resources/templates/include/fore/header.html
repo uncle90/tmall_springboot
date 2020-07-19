@@ -20,6 +20,18 @@
 	<script src="js/moment/2.22.2/moment.js"></script>
 	<!--前后端公用js-->
 	<script src="js/front-back-common.js"></script>
+
+	<script type="application/javascript" th:inline="javascript" >
+        /*<![CDATA[*/
+        var ctx = /*[[@{/}]]*/ '';
+        var ctx1 = /*[[${#httpServletRequest.getContextPath()}]]*/ '';
+        var ctx2 = /*[[${#httpServletRequest.contextPath}]]*/ '';
+        var port = /*[[${#httpServletRequest.serverPort}]]*/ '';
+        var scheme = /*[[${#httpServletRequest.getScheme()}]]*/ '';
+        var servername = /*[[${#httpServletRequest.getServerName()}]]*/'';
+        /*]]>*/
+	</script>
+
 	<!--自定义js-->
 	<script>
         $(function(){
@@ -52,7 +64,6 @@
 
 		//定义全局过滤器-格式化日期
         Vue.filter('formatDateFilter', function (value, pattern) {
-            return value;
             if(null==value){
                 return "";
             }

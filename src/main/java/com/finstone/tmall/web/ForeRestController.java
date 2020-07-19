@@ -1,5 +1,6 @@
 package com.finstone.tmall.web;
 
+import cn.hutool.json.JSONObject;
 import com.finstone.tmall.pojo.*;
 import com.finstone.tmall.service.*;
 import com.finstone.tmall.util.ProductComparator;
@@ -33,6 +34,9 @@ public class ForeRestController {
     @Autowired
     ReviewService reviewService;
 
+    @Autowired
+    OrderItemService orderItemService;
+
     /**
      * 首页商品信息
      * @return
@@ -64,6 +68,8 @@ public class ForeRestController {
         if(userCheck == null){
             return ResponseEntity.fail("账号密码错误");
         }else{
+            //主键为空表示"未持久化"，findByUser会报错——"TransientObjectException: object references an unsaved transient instance"
+            user.setId(userCheck.getId());
             session.setAttribute("user", user);
             return ResponseEntity.success("登录成功");
         }
@@ -219,6 +225,51 @@ public class ForeRestController {
 
         Map<String, Object> map = new HashMap<>();
         map.put("ps",ps);
+        return ResponseEntity.success(map);
+    }
+
+    /**
+     * 立即购买某种商品。如果购物车有同类商品，则追加数量。
+     * @param jsonbody
+     * @param session
+     * @return
+     */
+    @PostMapping("forebuyone")
+    public ResponseEntity forebuyone(@RequestBody String jsonbody, HttpSession session
+            /*@RequestParam("pid") Integer pid, @RequestParam("num") Integer num*/){
+
+        User user = (User) session.getAttribute("user");
+        JSONObject jsonObject = new JSONObject(jsonbody);
+        Integer pid = Integer.parseInt(jsonObject.get("pid").toString());
+        Integer num = Integer.parseInt(jsonObject.get("num").toString());
+
+        Product product= productService.get(pid);
+        OrderItem orderItem = orderItemService.addCart(product, user, num);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("oiid",orderItem.getId());
+        return ResponseEntity.success(map);
+    }
+
+    /**
+     * 查看订单详情 - 列出订单项，计算总价。
+     * @param session
+     * @param oiid
+     * @return
+     */
+    @GetMapping("forebuy")
+    public ResponseEntity foreGetOrderItemsInfo(HttpSession session, @RequestParam("oiid") String[] oiid){
+        List<OrderItem> ois = new ArrayList<>();
+        float total = 0;
+        for(String strid: oiid){
+            int id = Integer.parseInt(strid);
+            OrderItem orderItem = orderItemService.get(id);
+            total += orderItem.getNumber() * orderItem.getProduct().getPromotePrice();//总价
+            ois.add(orderItem);
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("total",total);
+        map.put("ois",ois);
         return ResponseEntity.success(map);
     }
 

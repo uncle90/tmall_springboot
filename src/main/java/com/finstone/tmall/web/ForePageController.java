@@ -1,9 +1,7 @@
 package com.finstone.tmall.web;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
 
@@ -91,10 +89,11 @@ public class ForePageController {
     }
 
     /**
-     * 立即购买
+     * 下单页、结算页面
      */
-    @GetMapping("forebuyone")
+    @GetMapping("foreshooping")
     public String forebuyone(){
         return "fore/buy";
     }
+
 }
