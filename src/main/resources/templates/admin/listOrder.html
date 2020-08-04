@@ -120,7 +120,7 @@
                                 <table width="800px" align="center" class="orderPageOrderItemTable">
                                     <tr v-for="oi in o.orderItems">
                                         <td align="left">
-                                            <!--<img width="40px" height="40px" :src="'img/productSingle/'+oi.product.firstProductImage.id+'.jpg'">-->
+                                            <img width="40px" height="40px" :src="ctx+'img/productSingle/'+oi.product.firstProductImage.id+'.jpg'">
                                         </td>
                                         <td>
                                             <a :href="ctx+'foreproduct?pid='+oi.product.id">

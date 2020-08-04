@@ -114,6 +114,8 @@ public class OrderItemService {
             for(OrderItem orderItem: ois){
                 count += orderItem.getNumber();
                 total += orderItem.getNumber()*orderItem.getProduct().getPromotePrice();
+                //设置产品封面图片
+                productService.setFirstProductImage(orderItem.getProduct());
             }
         }
         order.setTotalNumber(count);
