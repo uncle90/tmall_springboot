@@ -76,7 +76,7 @@
                         axios.post(url,param).then(function(response){//添加订单项
                             if(response.data.code == 0){
                                 var oiid = response.data.data.oiid;
-                                location.href= "foreshooping?oiid="+oiid;//前往结算页
+                                location.href= "buy?oiid="+oiid;//前往结算页
                             }else{
                                 alert(response.data.msg);
                             }

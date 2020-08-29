@@ -12,7 +12,7 @@
 	<!-- 热销商品 -->
 	<div :cid="c.id" class="productsAsideCategorys" v-for="c in cs" >
 		<div class="row show1" v-for="ps in c.productsByRow">
-			<a :href="'foreproduct?pid='+p.id" v-for="p in ps" v-if="p.subTitle.length!=0">
+			<a :href="'product?pid='+p.id" v-for="p in ps" v-if="p.subTitle.length!=0">
 				{{p.subTitle | subTitleFilter}}
 			</a>
 			<div class="seperator"></div>

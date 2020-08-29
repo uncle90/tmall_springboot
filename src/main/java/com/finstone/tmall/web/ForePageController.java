@@ -16,7 +16,7 @@ public class ForePageController {
      * @return
      */
     @GetMapping(value = "/")
-    public String home(){
+    public String index(){
         return "redirect:home";
     }
 
@@ -24,31 +24,31 @@ public class ForePageController {
      * 前往首页
      * @return
      */
-    @GetMapping(value = "home")
-    public String forehome(){
+    @GetMapping(value = "/home")
+    public String home(){
         return "fore/home";
     }
 
     /**
      * 前往登录页
      */
-    @GetMapping("loginPage")
-    public String loginPage(){
+    @GetMapping("/login")
+    public String login(){
         return "fore/login";
     }
 
     /**
      * 前往注册页
      */
-    @GetMapping("registerPage")
-    public String registerPage(){
+    @GetMapping("/register")
+    public String register(){
         return "fore/register";
     }
 
     /**
      * 前往注册成功页
      */
-    @GetMapping("registerSuccess")
+    @GetMapping("/registerSuccess")
     public String registerSuccess(){
         return "fore/registerSuccess";
     }
@@ -56,8 +56,8 @@ public class ForePageController {
     /**
      * 退出
      */
-    @GetMapping("forelogout")
-    public String forelogout(HttpSession session){
+    @GetMapping("logout")
+    public String logout(HttpSession session){
         session.removeAttribute("user");
         return "redirect:home";
     }
@@ -66,8 +66,8 @@ public class ForePageController {
      * 商品详情页
      * @return
      */
-    @GetMapping("foreproduct")
-    public String foreproduct(){
+    @GetMapping("product")
+    public String product(){
         return "fore/product";
     }
 
@@ -75,24 +75,24 @@ public class ForePageController {
      * 商品分类页
      * @return
      */
-    @GetMapping("forecategory")
-    public String forecategory(){
+    @GetMapping("category")
+    public String category(){
         return "fore/category";
     }
 
     /**
-     * 商品搜索
+     * 搜索结果页
      */
-    @GetMapping("foresearch")
-    public String foresearch(){
+    @GetMapping("search")
+    public String search(){
         return "fore/searchResult";
     }
 
     /**
      * 下单页、结算页面
      */
-    @GetMapping("foreshooping")
-    public String forebuyone(){
+    @GetMapping("buy")
+    public String buy(){
         return "fore/buy";
     }
 

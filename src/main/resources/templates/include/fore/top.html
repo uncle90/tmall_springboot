@@ -17,12 +17,12 @@
 		</span>-->
 
 		<span th:if="${session.user}!=null">
-			<a href="loginPage" th:text="${session.user.name}"></a>
-			<a href="forelogout">退出</a>
+			<a href="login" th:text="${session.user.name}"></a>
+			<a href="logout">退出</a>
 		</span>
 		<span th:if="${session.user}==null">
-			<a href="loginPage">请登录</a>
-			<a href="registerPage">免费注册</a>
+			<a href="login">请登录</a>
+			<a href="register">免费注册</a>
 		</span>
 
 		<span class="pull-right">

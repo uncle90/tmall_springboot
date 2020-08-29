@@ -42,7 +42,7 @@ public class ForeRestController {
      * @return
      */
     @GetMapping("forehome")
-    public Object forehome(){
+    public Object home(){
         //查询所有分类
         List<Category> cs = categoryService.list();
 
@@ -63,7 +63,7 @@ public class ForeRestController {
      * 登录
      */
     @PostMapping("forelogin")
-    public ResponseEntity forelogin(@RequestBody User user, HttpSession session){
+    public ResponseEntity login(@RequestBody User user, HttpSession session){
         User userCheck = userService.get(user.getName(), user.getPassword());
         if(userCheck == null){
             return ResponseEntity.fail("账号密码错误");
@@ -78,8 +78,8 @@ public class ForeRestController {
     /**
      * 注册
      */
-    @PostMapping("register")
-    public ResponseEntity foreregister(@RequestBody User user){
+    @PostMapping("foreregister")
+    public ResponseEntity register(@RequestBody User user){
         if(userService.isExist(user.getName())){
             return ResponseEntity.fail("用户名已经被使用");
         }
@@ -92,7 +92,7 @@ public class ForeRestController {
      * @return
      */
     @GetMapping("forecheckLogin")
-    public ResponseEntity forecheckLogin(HttpSession session){
+    public ResponseEntity checkLogin(HttpSession session){
         User user = (User) session.getAttribute("user");
         if(user == null){
             return ResponseEntity.fail("请先登录");
@@ -235,7 +235,7 @@ public class ForeRestController {
      * @return
      */
     @PostMapping("forebuyone")
-    public ResponseEntity forebuyone(@RequestBody String jsonbody, HttpSession session
+    public ResponseEntity buyone(@RequestBody String jsonbody, HttpSession session
             /*@RequestParam("pid") Integer pid, @RequestParam("num") Integer num*/){
 
         User user = (User) session.getAttribute("user");
@@ -258,7 +258,7 @@ public class ForeRestController {
      * @return
      */
     @GetMapping("forebuy")
-    public ResponseEntity foreGetOrderItemsInfo(HttpSession session, @RequestParam("oiid") String[] oiid){
+    public ResponseEntity buy(HttpSession session, @RequestParam("oiid") String[] oiid){
         List<OrderItem> ois = new ArrayList<>();
         float total = 0;
         for(String strid: oiid){
