@@ -3,7 +3,9 @@ package com.finstone.tmall.web;
 import cn.hutool.json.JSONObject;
 import com.finstone.tmall.pojo.*;
 import com.finstone.tmall.service.*;
+import com.finstone.tmall.util.DateSyncUtil;
 import com.finstone.tmall.util.ProductComparator;
+import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +38,9 @@ public class ForeRestController {
 
     @Autowired
     OrderItemService orderItemService;
+
+    @Autowired
+    OrderService orderService;
 
     /**
      * 首页商品信息
@@ -252,7 +257,7 @@ public class ForeRestController {
     }
 
     /**
-     * 查看订单详情 - 列出订单项，计算总价。
+     * 结算页面。查看订单详情，列出订单项，计算总价，并把订单项ois放在session中。
      * @param session
      * @param oiid
      * @return
@@ -260,16 +265,45 @@ public class ForeRestController {
     @GetMapping("forebuy")
     public ResponseEntity buy(HttpSession session, @RequestParam("oiid") String[] oiid){
         List<OrderItem> ois = new ArrayList<>();
-        float total = 0;
+        double total = 0;
         for(String strid: oiid){
             int id = Integer.parseInt(strid);
             OrderItem orderItem = orderItemService.get(id);
+            //封面图片
+            productService.setFirstProductImage(orderItem.getProduct());
             total += orderItem.getNumber() * orderItem.getProduct().getPromotePrice();//总价
             ois.add(orderItem);
         }
+
         Map<String, Object> map = new HashMap<>();
         map.put("total",total);
         map.put("ois",ois);
+        session.setAttribute("ois",ois);//把订单项放入回话，给其他页面使用
+        return ResponseEntity.success(map);
+    }
+
+    /**
+     * 提交订单。价格不需要额外保存，在订单项中。
+     * @param session - 用户, 订单项
+     * @param order 接收订单参数
+     * @return
+     */
+    @PostMapping("forecreateOrder")
+    public ResponseEntity createOrder(HttpSession session, Order order){
+        //用户&订单项
+        User user = (User) session.getAttribute("user");
+        List<OrderItem> ois = (List<OrderItem>) session.getAttribute("ois");
+        //订单字段
+        Date date = new Date();
+        order.setOrderCode(DateSyncUtil.format(date)+ RandomUtils.nextInt(10000));//时间戳
+        order.setCreateDate(date);
+        order.setUser(user);
+        order.setStatus(OrderService.waitPay);
+        //生成订单，返回订单总价、编号。
+        double total = orderService.add(order, ois);
+        Map<String, Object> map = new HashMap<>();
+        map.put("total",total);
+        map.put("oid",order.getId());
         return ResponseEntity.success(map);
     }
 

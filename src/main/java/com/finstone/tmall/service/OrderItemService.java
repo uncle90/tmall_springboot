@@ -109,7 +109,7 @@ public class OrderItemService {
         order.setOrderItems(ois);
 
         Integer count = 0; //订单中的商品数量
-        float total = 0;  //订单总金额
+        double total = 0;  //订单总金额
         if(ois !=null && !ois.isEmpty()){
             for(OrderItem orderItem: ois){
                 count += orderItem.getNumber();

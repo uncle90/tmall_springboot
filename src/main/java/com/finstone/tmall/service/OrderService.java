@@ -12,6 +12,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -36,8 +38,28 @@ public class OrderService {
         return orderDao.findOne(id);
     }
 
-    public Order add(Order order){
+    public Order add(Order order) {
         return orderDao.save(order);
+    }
+
+    /**
+     * 创建订单,更新订单项,返回订单总价.遇到任何异常Exception都回滚.
+     * @param order
+     * @param ois
+     * @return 总价
+     */
+    @Transactional(propagation = Propagation.REQUIRED, rollbackForClassName = {"Exception"})
+    public double add(Order order, List<OrderItem> ois){
+        double total = 0;
+        //创建订单
+        this.add(order);
+        //更新订单项 oid
+        for(OrderItem oi: ois){
+            oi.setOrder(order);
+            orderItemService.update(oi);
+            total += oi.getNumber() * oi.getProduct().getPromotePrice();
+        }
+        return total;
     }
 
     public void delete(Integer id){

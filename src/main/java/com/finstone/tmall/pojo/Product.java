@@ -29,10 +29,10 @@ public class Product {
     private String subTitle;
 
     @Column(name="originalPrice")
-    private Float originalPrice;
+    private Double originalPrice;
 
     @Column(name="promotePrice")
-    private Float promotePrice;
+    private Double promotePrice;
 
     @Column(name="stock")
     private Integer stock;
@@ -99,19 +99,19 @@ public class Product {
         this.subTitle = subTitle == null ? null : subTitle.trim();
     }
 
-    public Float getOriginalPrice() {
+    public Double getOriginalPrice() {
         return originalPrice;
     }
 
-    public void setOriginalPrice(Float originalPrice) {
+    public void setOriginalPrice(Double originalPrice) {
         this.originalPrice = originalPrice;
     }
 
-    public Float getPromotePrice() {
+    public Double getPromotePrice() {
         return promotePrice;
     }
 
-    public void setPromotePrice(Float promotePrice) {
+    public void setPromotePrice(Double promotePrice) {
         this.promotePrice = promotePrice;
     }
 

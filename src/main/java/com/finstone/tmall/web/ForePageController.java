@@ -89,7 +89,7 @@ public class ForePageController {
     }
 
     /**
-     * 下单页、结算页面
+     * 下单页、结算页面-立即购买、购物车结算
      */
     @GetMapping("buy")
     public String buy(){

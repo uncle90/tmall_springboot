@@ -68,7 +68,7 @@ public class Order {
      * 订单总金额
      */
     @Transient
-    private float total;
+    private double total;
 
     /**
      * 订单项
@@ -228,11 +228,11 @@ public class Order {
         this.totalNumber = totalNumber;
     }
 
-    public float getTotal() {
+    public double getTotal() {
         return total;
     }
 
-    public void setTotal(float total) {
+    public void setTotal(double total) {
         this.total = total;
     }
 
