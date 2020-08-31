@@ -2,6 +2,7 @@ package com.finstone.tmall.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 
@@ -18,7 +19,9 @@ public class User {
     private String name;
 
     //不放在JSON中输出到前台
-    //@JsonIgnore
+    //@JsonIgnore 序列化、反序列化都影响
+    //@JsonProperty - WRITE_ONLY仅反序列化, READ_ONLY仅做序列化。
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @JsonIgnore
