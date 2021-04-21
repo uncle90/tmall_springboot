@@ -5,6 +5,7 @@ import com.finstone.tmall.pojo.*;
 import com.finstone.tmall.service.*;
 import com.finstone.tmall.util.DateSyncUtil;
 import com.finstone.tmall.util.ProductComparator;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +48,7 @@ public class ForeRestController {
      * @return
      */
     @GetMapping("forehome")
+    @ApiOperation("首页商品信息查询")
     public Object home(){
         //查询所有分类
         List<Category> cs = categoryService.list();
